@@ -46,6 +46,10 @@ namespace USOS.Controllers
         {
             return View();
         }
+        public IActionResult GG2()
+        {
+            return View();
+        }
         public IActionResult Test22()
         {
             return View();
