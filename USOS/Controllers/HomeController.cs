@@ -42,10 +42,15 @@ namespace USOS.Controllers
         {
             return View();
         }
+        public IActionResult KG2()
+        {
+            return View();
+        }
         public IActionResult GG()
         {
             return View();
         }
+
 
         public IActionResult Test2()
         {
