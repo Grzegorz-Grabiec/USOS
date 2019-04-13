@@ -42,7 +42,7 @@ namespace USOS.Controllers
         {
             return View();
         }
-        public IActionResult GG()
+        public IActionResult KG2()
         {
             return View();
         }
