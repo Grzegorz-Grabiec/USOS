@@ -51,7 +51,6 @@ namespace USOS.Controllers
             return View();
         }
 
-
         public IActionResult Test2()
         {
             return View();
