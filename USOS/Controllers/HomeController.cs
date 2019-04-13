@@ -38,8 +38,9 @@ namespace USOS.Controllers
         {
             return View();
         }
+       
 
-        public IActionResult TestKG()
+        public IActionResult Test2()
         {
             return View();
         }
