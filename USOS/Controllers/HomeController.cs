@@ -42,7 +42,10 @@ namespace USOS.Controllers
         {
             return View();
         }
-
+        public IActionResult Test22()
+        {
+            return View();
+        }
         public IActionResult Test2()
         {
             return View();
