@@ -29,12 +29,7 @@ namespace USOS.Controllers
             return View();
         }
 
-        public IActionResult Login()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
+       
 
         [HttpGet]
        
@@ -51,35 +46,6 @@ namespace USOS.Controllers
         }
         
        
-        [HttpPost]
-        public ActionResult Verify(Account acc)
-        {
-        string connStr = configuration.GetConnectionString("MyConnStr");
-        con = new SqlConnection(connStr);
-        com = new SqlCommand();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from Users where Login='" + acc.Login + "' and Password='" + acc.Password + "'";
-            dr = com.ExecuteReader();
-            if(dr.Read())
-            {
-                con.Close();
-               
-                return View("Akitek");
-            }
-            else
-            {
-                con.Close();
-                return View("Login");
-            }
-           
-
-
-            
-
-        }
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
