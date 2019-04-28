@@ -1,4 +1,12 @@
-﻿@model LoginModel
+﻿
+@model USOS.Models.RegisterModel
+@{
+
+    ViewData["Title"] = "Rejestruj";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
 <head>
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/animate.min.css" rel="stylesheet" />
@@ -15,15 +23,12 @@
         <br />
         <br />
         <br />
-        <div asp-validation-summary="All"></div>
         <br />
-        <h1>Zaloguj się</h1>
+        <h1>Zarejestruj się</h1>
         <div class="w3-agileits-info">
-            <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Login" method="post">
+            <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Rejestruj" method="post">
                 <p class="w3agileits"></p>
-                <br />
                 <div asp-validation-summary="All"></div>
-                <br />
                 <div class='form-group has-feedback w3ls'>
                     <label asp-for="Login" class='control-label sr-only'>Login</label>
                     <input asp-for="Login" class='form-control' id='Login' name='Login' placeholder='Nazwa' type='text'>
@@ -33,23 +38,22 @@
 
 
                 <div class='form-group has-feedback agile'>
-                    <label asp-for="Password" class='control-label sr-only'>Password</label>
+                    <label asp-for="Password" class='control-label sr-only' >Password</label>
                     <input asp-for="Password" class='form-control w3l' id='password' name='Password' placeholder='Hasło' type='Password'>
                     <span asp-validation-for="Password" class='glyphicon glyphicon-ok form-control-feedback'></span>
-                    <br />
-                    <div>
-                        <label asp-for="RememberMe"></label>
-                        <input asp-for="RememberMe" >
-                        <span asp-validation-for="RememberMe"></span>
-                    </div>
-                    <div class='submit w3-agile'>
-                        <input class='btn btn-lg' type='submit' value='Zaloguj'>
-                    </div>
+                </div>
+                <div class='form-group has-feedback agile'>
+                    <label asp-for="ConfirmPassword" class='control-label sr-only' for='ConfirmPassword'>Confirm Password</label>
+                    <input asp-for="ConfirmPassword" class='form-control w3l' id='password' name='ConfirmPassword' placeholder='Powtórz hasło' type='Password'>
+                    <span asp-validation-for="ConfirmPassword" class='glyphicon glyphicon-ok form-control-feedback'></span>
+                </div>
+                <div class='submit w3-agile'>
+                    <input class='btn btn-lg' type='submit' value='Zarejestruj'>
+                </div>
             </form>
         </div>
     </div>
     <!-- //agileits -->
-  
     <!-- js -->
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src='js/jquery.validate.min.js'></script>

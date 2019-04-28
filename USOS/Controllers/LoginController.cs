@@ -7,19 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using USOS.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace USOS.Controllers
 {
     public class LoginController : Controller
     {
-
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration configuration;
         SqlConnection con;
         SqlCommand com;
         SqlDataReader dr;
 
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config,UserManager<AppUser> userManager,SignInManager<AppUser> signInManager)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             this.configuration = config;
         }
 
@@ -28,11 +34,72 @@ namespace USOS.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
             ViewData["Message"] = "Your application description page.";
 
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                var user = new AppUser { UserName = vm.Login };
+                var result = await _signInManager.PasswordSignInAsync(vm.Login, vm.Password,vm.RememberMe,false);
+                if (result.Succeeded)
+                {
+                    
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Zły login");
+                    return View(vm);
+
+                }
+
+            }
+            return View(vm);
+        }
+
+    
+        [HttpGet]
+      //  public IActionResult Rejestruj()
+       // {
+       //     ViewData["Message"] = "Your application description page.";
+
+        //    return View();
+       // }
+        [HttpPost]
+        public async Task<IActionResult> Rejestruj(RegisterModel vm)
+        {
+            ViewData["Message"] = "Your application description page.";
+            if (ModelState.IsValid)
+          {                   
+                 
+            
+                var user = new AppUser { UserName = vm.Login };
+                var result = await _userManager.CreateAsync(user, vm.Password);
+                if(result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+               
+                }
+               
+            }
+            return View(vm);
         }
 
 
