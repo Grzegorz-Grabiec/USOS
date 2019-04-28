@@ -33,7 +33,7 @@ namespace USOS.Controllers
         {
             return View();
         }
-
+       
         [HttpGet]
         public IActionResult Login()
         {
@@ -53,7 +53,7 @@ namespace USOS.Controllers
                 if (result.Succeeded)
                 {
                     
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Akitek", "Home");
                 }
                 else
                 {

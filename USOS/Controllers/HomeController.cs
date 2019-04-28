@@ -28,8 +28,11 @@ namespace USOS.Controllers
         {
             return View();
         }
+        public IActionResult Akitek()
+        {
+            return View();
+        }
 
-       
 
         [HttpGet]
        
