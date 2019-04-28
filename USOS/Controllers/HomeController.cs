@@ -29,7 +29,6 @@ namespace USOS.Controllers
             return View();
         }
 
-       
 
         [HttpGet]
        

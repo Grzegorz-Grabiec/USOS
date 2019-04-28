@@ -46,13 +46,11 @@ namespace USOS.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
                 var user = new AppUser { UserName = vm.Login };
                 var result = await _signInManager.PasswordSignInAsync(vm.Login, vm.Password,vm.RememberMe,false);
+
                 if (result.Succeeded)
                 {
-                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -66,7 +64,14 @@ namespace USOS.Controllers
             return View(vm);
         }
 
-    
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+
         [HttpGet]
       //  public IActionResult Rejestruj()
        // {
