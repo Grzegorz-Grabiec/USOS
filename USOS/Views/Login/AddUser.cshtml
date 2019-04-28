@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model  AddUserView
+    <form method="post" asp-action="AddUser" asp-controller="Login">
+        <div asp-validation-summary="All"></div>
+        <div>
+            <label asp-for="Login"></label>
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div><input type="submit" value="Dodaj użytkownika" /></div>
+    </form>
+
