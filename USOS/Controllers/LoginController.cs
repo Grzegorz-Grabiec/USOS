@@ -84,12 +84,13 @@ namespace USOS.Controllers
         {
             ViewData["Message"] = "Your application description page.";
             if (ModelState.IsValid)
-          {                   
-                 
-            
+          {
+                
+
                 var user = new AppUser { UserName = vm.Login };
                 var result = await _userManager.CreateAsync(user, vm.Password);
-                if(result.Succeeded)
+                result = await _userManager.AddToRoleAsync(user, "Admin");
+                if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");

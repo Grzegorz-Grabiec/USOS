@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<USOS.Models.AdminUsersView>
+<h2>Administracja</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>Użytkownik</td>
+        <td>Rola</td>
+    </tr>
+
+
+    @foreach (var user in Model.ToList())
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Role</td>
+            <td><a asp-area="" asp-controller="Admin" asp-action="Edit">Edit</a></td>
+        </tr>
+    }
+</table>
+
+
