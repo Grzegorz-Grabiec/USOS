@@ -41,6 +41,7 @@ namespace USOS
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<USOSContext>()
                 .AddDefaultTokenProviders();
+         
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -100,6 +101,7 @@ namespace USOS
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                
             });
             CreateUserRoles(services).Wait();
         }

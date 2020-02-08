@@ -45,6 +45,10 @@
                         <li><a asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
                     }
                     <li><a asp-area="" asp-controller="Login" asp-action="Rejestruj">Rejestruj</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Akitek">Panel Admina</a></li>
+                    }
                     <li><a>@User.Identity.Name</a></li>
                 </ul>
             </div>
