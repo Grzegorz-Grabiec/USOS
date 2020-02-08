@@ -89,7 +89,7 @@ namespace USOS.Controllers
 
                 var user = new AppUser { UserName = vm.Login };
                 var result = await _userManager.CreateAsync(user, vm.Password);
-                result = await _userManager.AddToRoleAsync(user, "Admin");
+
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
