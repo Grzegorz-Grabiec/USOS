@@ -10,8 +10,10 @@ namespace USOS.Models
 {
     public class USOSContext : IdentityDbContext<AppUser>
     {
+        public DbSet<News> News { get; set; }
         public USOSContext(DbContextOptions<USOSContext> options) : base(options)
         {
+  
         }
         public DbSet<USOS.Models.AdminUsersView> AdminUsersView { get; set; }
     }
