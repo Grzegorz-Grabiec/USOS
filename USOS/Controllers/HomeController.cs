@@ -48,7 +48,7 @@ namespace USOS.Controllers
         [HttpGet]
         public ActionResult CreateNews()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -72,14 +72,15 @@ namespace USOS.Controllers
                     return View(model);
                 }
                 Obj.Text = model.Text;
-                Obj.Date = model.Date;
+                Obj.Header = model.Header;
+                Obj.Date = DateTime.Now;
 
                 ViewBag.Message = "Dodano";
                 context.News.Add(Obj);
                 context.SaveChanges();
 
             }
-            return RedirectToAction("CreateNews");
+            return RedirectToAction("News");
 
         }
         [HttpGet]
@@ -104,7 +105,7 @@ namespace USOS.Controllers
             }
 
 
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -132,7 +133,8 @@ namespace USOS.Controllers
                     ModelState.AddModelError("", "Aktualność już istnieje");
                 }
                 Obj.Text = model.Text;
-                Obj.Date = model.Date;
+                Obj.Header = model.Header;
+                Obj.Date = DateTime.Now;
 
 
 

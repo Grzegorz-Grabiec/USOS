@@ -2,48 +2,71 @@
 
 @{
     ViewData["Title"] = "News";
+     var modalID = "Admin";
+    var areaModalID = "Admin-label";
 }
 
 <h2>News</h2>
 @if (User.IsInRole("Admin"))
 {
     <p>
-        <a asp-action="CreateNews">Create New</a>
+        <a id="createLine" data-toggle="modal" asp-action="CreateNews" data-target="#@modalID" class="btn btn-primary">Create New</a>
     </p>
-}   
-    <table class="table">
-        <thead>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Header)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Text)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Header)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
+                    </td>
+                }
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
+        }
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Text)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td>
-                            @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+    </tbody>
+</table>
+@await Html.PartialAsync("_Modal", new Modal
+{
+    //UserName = ""
+    ID = modalID,
+    AreaLabelID = areaModalID,
+    Size = ModalSize.Medium
+})
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
+

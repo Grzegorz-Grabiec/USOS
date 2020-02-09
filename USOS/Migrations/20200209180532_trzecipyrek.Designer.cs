@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using USOS.Models;
 
 namespace USOS.Migrations
 {
     [DbContext(typeof(USOSContext))]
-    partial class USOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200209180532_trzecipyrek")]
+    partial class trzecipyrek
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,8 +203,6 @@ namespace USOS.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<string>("Header");
 
                     b.Property<string>("Text");
 
