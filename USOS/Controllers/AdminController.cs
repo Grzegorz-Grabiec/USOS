@@ -46,6 +46,89 @@ namespace USOS.Controllers
 
             return PartialView("Edit", userEdit);
         }
+
+        public async Task<IActionResult> Delete(string userName)
+        {
+            AppUser editUser = _userManager.FindByNameAsync(userName).Result;
+
+            await _userManager.DeleteAsync(editUser);
+
+            return RedirectToAction("Index", "Admin");
+        }
+        public IActionResult Create()
+        {
+            var userEdit = new AdminUsersView();
+
+            userEdit.Roles = new List<SelectListItem>()
+            {
+                new SelectListItem {Text = "Administrator", Value = "Admin"},
+                new SelectListItem {Text = "Użytkownik", Value = "User"},
+                new SelectListItem {Text = "Wykładowca", Value = "Lecturer"},
+                new SelectListItem {Text = "Student", Value = "Student"},
+                new SelectListItem {Text = "Pracownik", Value = "Worker"}
+            };
+
+            return PartialView("Create", userEdit);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(AdminUsersView model)
+        {
+        if (ModelState.IsValid)
+        {
+
+            AppUser newUser = _userManager.FindByNameAsync(model.UserName).Result;
+            if (newUser == null)
+            {
+                newUser = new AppUser();
+                newUser.UserName = model.UserName;
+                newUser.PhoneNumber = model.PhoneNumber;
+                newUser.Email = model.Email;
+
+                var resultCreate = await _userManager.CreateAsync(newUser, model.Password);
+                if (resultCreate.Succeeded)
+                {
+                    var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
+                    if (model.Role != null)
+                    {
+                        foreach (string role in model.Role)
+                        {
+
+                            var roleCheck = roleManager.RoleExistsAsync(role).Result;
+                            if (roleCheck)
+                            {
+                                var isInRole = await _userManager.IsInRoleAsync(newUser, role);
+                                if (!isInRole)
+                                {
+                                    await _userManager.AddToRoleAsync(newUser, role);
+                                }
+                            }
+                        }
+                    }
+                    return RedirectToAction("Index", "Admin");
+                }
+                else    
+                {
+                    foreach (var error in resultCreate.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                }
+            }
+            
+        }
+
+            model.Roles = new List<SelectListItem>()
+            {
+                new SelectListItem {Text = "Administrator", Value = "Admin"},
+                new SelectListItem {Text = "Użytkownik", Value = "User"},
+                new SelectListItem {Text = "Wykładowca", Value = "Lecturer"},
+                new SelectListItem {Text = "Student", Value = "Student"},
+                new SelectListItem {Text = "Pracownik", Value = "Worker"}
+            };
+
+            return View(model);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminUsersView model)
