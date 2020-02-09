@@ -75,9 +75,9 @@ namespace USOS
                 roleResult = await RoleManager.CreateAsync(new IdentityRole("User"));
             }
             // Assign Admin role to newly registered user
-            AppUser user = await UserManager.FindByNameAsync("krzych2837");
-            var User = new AppUser();
-            await UserManager.AddToRoleAsync(user, "Admin");
+            //AppUser user = await UserManager.FindByNameAsync("krzych2837");
+            //var User = new AppUser();
+            //await UserManager.AddToRoleAsync(user, "Admin");
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,IServiceProvider services)
