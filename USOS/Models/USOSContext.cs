@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using USOS.Models;
 
 namespace USOS.Models
 {
@@ -14,5 +15,6 @@ namespace USOS.Models
         {
   
         }
+        public DbSet<USOS.Models.AdminUsersView> AdminUsersView { get; set; }
     }
 }

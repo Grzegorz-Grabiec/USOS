@@ -3,7 +3,17 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@{
+    ViewData["Title"] = "Admin";
+    var modalID = "Admin";
+    var areaModalID = "Admin-label";
+}
+
+
 @model IEnumerable<USOS.Models.AdminUsersView>
+<div id="modal-placeholder"></div>
+
 <h2>Administracja</h2>
 <table class="table table-bordered table-striped">
     <tr>
@@ -14,12 +24,31 @@
 
     @foreach (var user in Model.ToList())
     {
-        <tr>
-            <td>@user.UserName</td>
-            <td>@user.Role</td>
-            <td><a asp-area="" asp-controller="Admin" asp-action="Edit">Edit</a></td>
-        </tr>
+    <tr>
+        <td>@user.UserName</td>
+        <td>@user.Role</td>
+        <td>
+            <a id="createLine" data-toggle="modal" asp-action="Edit" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edit</a>
+        </td>
+    </tr>
     }
 </table>
+
+@await Html.PartialAsync("_Modal", new Modal
+{
+    //UserName = ""
+    ID = modalID,
+    AreaLabelID = areaModalID,
+    Size = ModalSize.Medium
+})
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
+
+
 
 

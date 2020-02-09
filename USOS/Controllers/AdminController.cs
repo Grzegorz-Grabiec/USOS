@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using USOS.Models;
 
 namespace USOS.Controllers
@@ -16,17 +17,44 @@ namespace USOS.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration configuration;
-
-        public AdminController(IConfiguration config, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IServiceProvider _provider;
+        public AdminController(IConfiguration config, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IServiceProvider provider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this.configuration = config;
+            _provider = provider;
         }
-        [HttpGet]
-        public IActionResult Edit()
+
+        public IActionResult Edit(string userName)
         {
-            return View();
+            AppUser editUser = _userManager.FindByNameAsync(userName).Result;
+            var userEdit = new AdminUsersView();
+            userEdit.PhoneNumber    = editUser.PhoneNumber;
+            userEdit.Email          = editUser.Email;
+            userEdit.UserName       = editUser.UserName;
+
+            return PartialView("Edit", userEdit);
+        }
+        [HttpPost]
+        public IActionResult Edit(AdminUsersView model)
+        {
+            var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            AppUser editUser = _userManager.FindByNameAsync(model.UserName).Result;
+            editUser.Email          = model.Email;
+            editUser.PhoneNumber    = model.PhoneNumber;
+            if (model.Role != null)
+            {
+                var roleCheck = roleManager.RoleExistsAsync(model.Role).Result;
+                if (roleCheck)
+                {
+                    _userManager.AddToRoleAsync(editUser, model.Role);
+                }
+            }
+            var result = _userManager.UpdateAsync(editUser).Result;
+
+            return RedirectToAction("Index", "Admin");
         }
         public IActionResult Index()
         {
