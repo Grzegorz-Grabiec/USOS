@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -34,10 +35,20 @@ namespace USOS.Controllers
             userEdit.Email          = editUser.Email;
             userEdit.UserName       = editUser.UserName;
 
+            userEdit.Roles = new List<SelectListItem>()
+            {
+                new SelectListItem {Text = "Administrator", Value = "Admin",Selected = _userManager.IsInRoleAsync(editUser, "Admin").Result},
+                new SelectListItem {Text = "Użytkownik", Value = "User",Selected = _userManager.IsInRoleAsync(editUser, "User").Result},
+                new SelectListItem {Text = "Wykładowca", Value = "Lecturer",Selected = _userManager.IsInRoleAsync(editUser, "Lecturer").Result},
+                new SelectListItem {Text = "Student", Value = "Student",Selected = _userManager.IsInRoleAsync(editUser, "Student").Result},
+                new SelectListItem {Text = "Pracownik", Value = "Worker",Selected = _userManager.IsInRoleAsync(editUser, "Worker").Result}
+            };
+
             return PartialView("Edit", userEdit);
         }
         [HttpPost]
-        public IActionResult Edit(AdminUsersView model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AdminUsersView model)
         {
             var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -46,10 +57,26 @@ namespace USOS.Controllers
             editUser.PhoneNumber    = model.PhoneNumber;
             if (model.Role != null)
             {
-                var roleCheck = roleManager.RoleExistsAsync(model.Role).Result;
-                if (roleCheck)
+                IList<string> userRoles = _userManager.GetRolesAsync(editUser).Result;
+                foreach(string roleName in userRoles)
                 {
-                    _userManager.AddToRoleAsync(editUser, model.Role);
+                    if(!model.Role.Contains(roleName))
+                    {
+                        await _userManager.RemoveFromRoleAsync(editUser,roleName);
+                    }
+                }
+                foreach (string role in model.Role)
+                {
+
+                    var roleCheck = roleManager.RoleExistsAsync(role).Result;
+                    if (roleCheck)
+                    {
+                        var isInRole = await _userManager.IsInRoleAsync(editUser, role);
+                        if (!isInRole)
+                        {
+                            await _userManager.AddToRoleAsync(editUser, role);
+                        }
+                    }
                 }
             }
             var result = _userManager.UpdateAsync(editUser).Result;
@@ -72,22 +99,19 @@ namespace USOS.Controllers
             {
                 var r = new AdminUsersView
                 {
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    Role = new List<string>()
                     //Role = _userManager.GetRolesAsync(user).ToString()
                 };
                 var roles = _userManager.GetRolesAsync(user).Result;
                 string roleStr = "";
                 foreach (var role in roles)
                 {
-                    if (roleStr == "")
-                        roleStr += role;
-                    else
-                        roleStr += "," + role;
+                    r.Role.Add(role);
                 }
-                r.Role = roleStr;
                 userRoles.Add(r);
             }
- 
+            
             return View(userRoles);
         }
     }
