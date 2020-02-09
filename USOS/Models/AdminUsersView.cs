@@ -12,6 +12,7 @@ namespace USOS.Models
     {
         [Key]
         public string UserName { get; set; }
+        public string Password { get; set; }
         [NotMapped]
         public List<string> Role { get; set; }
         [NotMapped]
