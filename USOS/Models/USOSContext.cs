@@ -15,6 +15,12 @@ namespace USOS.Models
         {
   
         }
-        public DbSet<USOS.Models.AdminUsersView> AdminUsersView { get; set; }
+        public DbSet<USOS.Models.Lecture> Lecture { get; set; }
+        public DbSet<USOS.Models.Mark> Mark { get; set; }
+        public DbSet<USOS.Models.Group> Group { get; set; }
+        public DbSet<USOS.Models.StudentGroup> StudentGroup { get; set; }
+        public DbSet<USOS.Models.Lesson> Lesson { get; set; }
+        public DbSet<USOS.Models.LessonsGroup> LessonsGroup { get; set; }
+        //public DbSet<USOS.Models.AdminUsersView> AdminUsersView { get; set; }
     }
 }

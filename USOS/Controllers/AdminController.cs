@@ -168,6 +168,10 @@ namespace USOS.Controllers
         }
         public IActionResult Index()
         {
+            return View();
+        }
+        public IActionResult Users()
+        {
             DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
             options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
             if (!User.IsInRole("Admin"))
@@ -194,7 +198,7 @@ namespace USOS.Controllers
                 }
                 userRoles.Add(r);
             }
-            
+
             return View(userRoles);
         }
     }
