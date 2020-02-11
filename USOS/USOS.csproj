@@ -24,4 +24,9 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Data\dzienne_inz_plan_2019_20_sem_I%281%29.xls" />
+    <None Include="wwwroot\Data\sesja_sem_2_6_2018_2019_sem_II.xls" />
+  </ItemGroup>
+
 </Project>

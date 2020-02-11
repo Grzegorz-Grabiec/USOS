@@ -15,14 +15,25 @@ using Microsoft.Extensions.FileProviders;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
+
 namespace USOS.Controllers
 {
     public class PlanController : Controller
     {
-        
+        private IHostingEnvironment _host;
+        public PlanController(IHostingEnvironment host)
+        {
+            _host = host;
+        }
+
         public IActionResult Plan()
         {
 
+            var webRoot = _host.WebRootPath;
+            string path2 = _host.WebRootPath + "\\Data";
+            var file2 = System.IO.Path.Combine(webRoot  , "~/Data");
+            String[] files = Directory.GetFiles(path2);
+            ViewBag.file3 = files;
             return View();
         }
 
@@ -32,7 +43,7 @@ namespace USOS.Controllers
         {
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Data")));
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Data")));
 
             services.AddMvc();
         }
@@ -55,7 +66,7 @@ namespace USOS.Controllers
                 return Content("file not selected");
 
             var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "Data",
+                        Directory.GetCurrentDirectory(), "wwwroot/Data",
                         file.FileName);
             
 
@@ -74,7 +85,7 @@ namespace USOS.Controllers
 
             var path = Path.Combine(
                            Directory.GetCurrentDirectory(),
-                           "wwwroot", filename);
+                           "wwwroot/Data", filename);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -108,7 +119,12 @@ namespace USOS.Controllers
                 {".csv", "text/csv"}
             };
         }
-      
+        public async Task<IActionResult> DeleteFile(string filename)
+        {
+
+        }
+
+
     }
 }
 

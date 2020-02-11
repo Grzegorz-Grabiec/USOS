@@ -14,67 +14,37 @@
     </p>
 }
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Header)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Text)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Header)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Text)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>
-                        @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                        <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
-                    </td>
-                }
-            </tr>
-        }
-        @foreach (var item in Model)
-        {
-            <div class="container-fluid">
-                
-                        <h4>
-                            @Html.DisplayFor(modelItem => item.Header)
-                            @item.Date.ToString("yyyy-MM-dd")
-                        </h4>
-                        <p>
-                            @Html.DisplayFor(modelItem => item.Text)<strong>
 
-                            </strong>    @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
+    @foreach (var item in Model)
+    {
+    
+        <div class="container-fluid" >
+ 
+            <div class="p-3 mb-2 bg-warning text-dark"style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+
+                <h4>  @Html.DisplayFor(modelItem => item.Header) </h4>
+                <h6>  @item.Date.ToString("yyyy-MM-dd")</h6>
+                <h5>
+                    @Html.DisplayFor(modelItem => item.Text)<strong></strong>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <p>
+                            @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
                             @Html.ActionLink("Details", "Details", new { id = item.ID }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                             <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
                         </p>
-                 
-         
-             </div>
+                    }
+                </h5>
 
-                }
 
-        </tbody>
+            </div>
+        </div>
+   
+
+    }
+
+    </tbody>
 </table>
 
 @await Html.PartialAsync("_Modal", new Modal
