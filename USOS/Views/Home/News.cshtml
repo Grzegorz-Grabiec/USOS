@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "News";
-     var modalID = "Admin";
+    var modalID = "Admin";
     var areaModalID = "Admin-label";
 }
 
@@ -52,9 +52,31 @@
                 }
             </tr>
         }
+        @foreach (var item in Model)
+        {
+            <div class="container-fluid">
+                
+                        <h4>
+                            @Html.DisplayFor(modelItem => item.Header)
+                            @item.Date.ToString("yyyy-MM-dd")
+                        </h4>
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Text)<strong>
 
-    </tbody>
+                            </strong>    @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
+                        </p>
+                 
+         
+             </div>
+
+                }
+
+        </tbody>
 </table>
+
 @await Html.PartialAsync("_Modal", new Modal
 {
     //UserName = ""
