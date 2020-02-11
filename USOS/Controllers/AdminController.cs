@@ -310,7 +310,7 @@ namespace USOS.Controllers
                 new SelectListItem {Text = "Pracownik", Value = "Worker"}
             };
 
-            return View(model);
+            return View("Index",model);
         }
        
         public IActionResult Index()
