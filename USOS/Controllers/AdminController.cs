@@ -26,8 +26,49 @@ namespace USOS.Controllers
             this.configuration = config;
             _provider = provider;
         }
+        public IActionResult EditLecture(int ID)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+            Lecture lecture = context.Lecture.Find(ID);
 
-        public IActionResult Edit(string userName)
+            return PartialView("EditLecture", lecture);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditLecture(Lecture model)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            context.Lecture.Update(model);
+            context.SaveChanges();
+            return RedirectToAction("Lectures", "Admin");
+        }
+        public IActionResult EditGroup(int ID)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+            Group group = context.Group.Find(ID);
+
+            return PartialView("EditGroup", group);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditGroup(Group model)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+            
+            context.Group.Update(model);
+            context.SaveChanges();
+            return RedirectToAction("Groups", "Admin");
+        }
+            public IActionResult EditUser(string userName)
         {
             AppUser editUser = _userManager.FindByNameAsync(userName).Result;
             var userEdit = new AdminUsersView();
@@ -44,18 +85,160 @@ namespace USOS.Controllers
                 new SelectListItem {Text = "Pracownik", Value = "Worker",Selected = _userManager.IsInRoleAsync(editUser, "Worker").Result}
             };
 
-            return PartialView("Edit", userEdit);
+            return PartialView("EditUser", userEdit);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(AdminUsersView model)
+        {
+            var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        public async Task<IActionResult> Delete(string userName)
+            AppUser editUser = _userManager.FindByNameAsync(model.UserName).Result;
+            editUser.Email = model.Email;
+            editUser.PhoneNumber = model.PhoneNumber;
+            if (model.Role != null)
+            {
+                IList<string> userRoles = _userManager.GetRolesAsync(editUser).Result;
+                foreach (string roleName in userRoles)
+                {
+                    if (!model.Role.Contains(roleName))
+                    {
+                        await _userManager.RemoveFromRoleAsync(editUser, roleName);
+                    }
+                }
+                foreach (string role in model.Role)
+                {
+
+                    var roleCheck = roleManager.RoleExistsAsync(role).Result;
+                    if (roleCheck)
+                    {
+                        var isInRole = await _userManager.IsInRoleAsync(editUser, role);
+                        if (!isInRole)
+                        {
+                            await _userManager.AddToRoleAsync(editUser, role);
+                        }
+                    }
+                }
+            }
+            var result = _userManager.UpdateAsync(editUser).Result;
+
+            return RedirectToAction("Users", "Admin");
+        }
+        public async Task<IActionResult> DeleteUser(string userName)
         {
             AppUser editUser = _userManager.FindByNameAsync(userName).Result;
 
             await _userManager.DeleteAsync(editUser);
 
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Users", "Admin");
         }
-        public IActionResult Create()
+        public async Task<IActionResult> DeleteLecture(int ID)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            Lecture lecture = context.Lecture.Find(ID);
+            if (lecture != null)
+            {
+                context.Lecture.Remove(lecture);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Lectures", "Admin");
+        }
+        public async Task<IActionResult> DeleteGroup(int ID)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            Group group = context.Group.Find(ID);
+            if(group != null)
+            {
+                context.Group.Remove(group);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Groups", "Admin");
+        }
+        public IActionResult Groups()
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            List<Group> groups;
+            var context = new USOSContext(options.Options);
+            groups = context.Group.ToArray().OrderBy(x => x.ID).Select(x => new Group() { ID = x.ID, Name = x.Name }).ToList();
+            return View(groups);
+        }
+        public IActionResult Lectures()
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            List<Lecture> lectures;
+            var context = new USOSContext(options.Options);
+            lectures = context.Lecture.ToArray().OrderBy(x => x.ID).Select(x => new Lecture() { ID = x.ID, Name = x.Name }).ToList();
+            return View(lectures);
+        }
+        public IActionResult CreateLecture()
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            Lecture lecture = new Lecture();
+
+            return PartialView("CreateLecture", lecture);
+        }
+        [HttpPost]
+        public IActionResult CreateLecture(Lecture model)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+            Lecture newLecture = new Lecture();
+
+            Lecture result = context.Lecture.Find(model.ID);
+            if (result == null)
+            {
+                newLecture.Name = model.Name;
+
+                context.Lecture.Add(newLecture);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Lectures", "Admin");
+        }
+        public IActionResult CreateGroup()
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            Group group = new Group();
+
+            return PartialView("CreateGroup", group);
+        }
+        [HttpPost]
+        public IActionResult CreateGroup(Group model)
+        {
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+            Group newGroup = new Group();
+
+            Group result = context.Group.Find(model.ID);
+            if(result == null)
+            {
+                newGroup.Name = model.Name;
+
+                context.Group.Add(newGroup);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Groups", "Admin");
+        }
+            public IActionResult CreateUser()
         {
             var userEdit = new AdminUsersView();
 
@@ -68,10 +251,10 @@ namespace USOS.Controllers
                 new SelectListItem {Text = "Pracownik", Value = "Worker"}
             };
 
-            return PartialView("Create", userEdit);
+            return PartialView("CreateUser", userEdit);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(AdminUsersView model)
+        public async Task<IActionResult> CreateUser(AdminUsersView model)
         {
         if (ModelState.IsValid)
         {
@@ -104,7 +287,7 @@ namespace USOS.Controllers
                             }
                         }
                     }
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Users", "Admin");
                 }
                 else    
                 {
@@ -129,43 +312,7 @@ namespace USOS.Controllers
 
             return View(model);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AdminUsersView model)
-        {
-            var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            AppUser editUser = _userManager.FindByNameAsync(model.UserName).Result;
-            editUser.Email          = model.Email;
-            editUser.PhoneNumber    = model.PhoneNumber;
-            if (model.Role != null)
-            {
-                IList<string> userRoles = _userManager.GetRolesAsync(editUser).Result;
-                foreach(string roleName in userRoles)
-                {
-                    if(!model.Role.Contains(roleName))
-                    {
-                        await _userManager.RemoveFromRoleAsync(editUser,roleName);
-                    }
-                }
-                foreach (string role in model.Role)
-                {
-
-                    var roleCheck = roleManager.RoleExistsAsync(role).Result;
-                    if (roleCheck)
-                    {
-                        var isInRole = await _userManager.IsInRoleAsync(editUser, role);
-                        if (!isInRole)
-                        {
-                            await _userManager.AddToRoleAsync(editUser, role);
-                        }
-                    }
-                }
-            }
-            var result = _userManager.UpdateAsync(editUser).Result;
-
-            return RedirectToAction("Index", "Admin");
-        }
+       
         public IActionResult Index()
         {
             return View();

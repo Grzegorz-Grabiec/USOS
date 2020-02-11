@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Groups";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<USOS.Models.Group>
+
+@{
+    ViewData["Title"] = "Group";
+    var modalID = "Group";
+    var areaModalID = "Group-label";
+}
+
+<h2>Grupy</h2>
+<div>
+    <div class="btn-group">
+        <a id="createLine" data-toggle="modal" asp-action="CreateGroup" data-target="#@modalID" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Dodaj grupe
+        </a>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>ID</td>
+        <td>Nazwa</td>
+    </tr>
+
+
+    @foreach (var group in Model.ToList())
+    {
+        <tr>
+            <td>@group.ID</td>
+            <td>@group.Name</td>
+            <td>
+                <a id="editLine" data-toggle="modal" asp-action="EditGroup" asp-route-ID="@group.ID" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+            </td>
+            <td>
+                <a id="deleteLine" asp-action="DeleteGroup" asp-route-ID="@group.ID" class="btn btn-primary">Usuń</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@await Html.PartialAsync("_Modal", new Modal
+   {
+       ID = modalID,
+       AreaLabelID = areaModalID,
+       Size = ModalSize.Medium
+   })
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
