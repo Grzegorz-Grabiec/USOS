@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Admin";
+    var modalID = "Admin";
+    var areaModalID = "Admin-label";
+}
+
+
+@model IEnumerable<USOS.Models.AdminUsersView>
+<div id="modal-placeholder"></div>
+
+<h2>Użytkownicy</h2>
+<div>
+    <div class="btn-group">
+        <a id="createLine" data-toggle="modal" asp-action="Create" data-target="#@modalID" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Add Line
+        </a>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>Użytkownik</td>
+        <td>Rola</td>
+    </tr>
+
+
+    @foreach (var user in Model.ToList())
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@string.Join(",", user.Role.ToArray())</td>
+            <td>
+                <a id="editLine" data-toggle="modal" asp-action="Edit" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edit</a>
+            </td>
+            <td>
+                <a id="deleteLine" asp-action="Delete" asp-route-userName="@user.UserName" class="btn btn-primary">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@await Html.PartialAsync("_Modal", new Modal
+   {
+       ID = modalID,
+       AreaLabelID = areaModalID,
+       Size = ModalSize.Medium
+   })
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
