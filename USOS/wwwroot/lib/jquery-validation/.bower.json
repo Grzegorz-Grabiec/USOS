@@ -26,6 +26,7 @@
   ],
   "dependencies": {
     "jquery": ">= 1.7.2"
+    
   },
   "version": "1.17.0",
   "_release": "1.17.0",
@@ -38,4 +39,6 @@
   "_target": "^1.17.0",
   "_originalSource": "jquery-validation",
   "_direct": true
+  
+    
 }

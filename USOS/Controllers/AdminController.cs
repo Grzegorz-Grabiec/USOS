@@ -13,6 +13,8 @@ using USOS.Models;
 
 namespace USOS.Controllers
 {
+
+
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -26,11 +28,11 @@ namespace USOS.Controllers
             this.configuration = config;
             _provider = provider;
         }
+
         public IActionResult EditLecture(int ID)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
+
             Lecture lecture = context.Lecture.Find(ID);
 
             return PartialView("EditLecture", lecture);
@@ -39,9 +41,7 @@ namespace USOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditLecture(Lecture model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
 
             context.Lecture.Update(model);
             context.SaveChanges();
@@ -49,9 +49,8 @@ namespace USOS.Controllers
         }
         public IActionResult EditGroup(int ID)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
+
             Group group = context.Group.Find(ID);
 
             return PartialView("EditGroup", group);
@@ -60,10 +59,8 @@ namespace USOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditGroup(Group model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
-            
+            USOSContext context = this.initContext();
+
             context.Group.Update(model);
             context.SaveChanges();
             return RedirectToAction("Groups", "Admin");
@@ -134,9 +131,7 @@ namespace USOS.Controllers
         }
         public async Task<IActionResult> DeleteLecture(int ID)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
 
             Lecture lecture = context.Lecture.Find(ID);
             if (lecture != null)
@@ -149,9 +144,7 @@ namespace USOS.Controllers
         }
         public async Task<IActionResult> DeleteGroup(int ID)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
 
             Group group = context.Group.Find(ID);
             if(group != null)
@@ -164,38 +157,73 @@ namespace USOS.Controllers
         }
         public IActionResult Groups()
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
             List<Group> groups;
-            var context = new USOSContext(options.Options);
+
             groups = context.Group.ToArray().OrderBy(x => x.ID).Select(x => new Group() { ID = x.ID, Name = x.Name }).ToList();
             return View(groups);
         }
         public IActionResult Lectures()
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
             List<Lecture> lectures;
-            var context = new USOSContext(options.Options);
+
             lectures = context.Lecture.ToArray().OrderBy(x => x.ID).Select(x => new Lecture() { ID = x.ID, Name = x.Name }).ToList();
             return View(lectures);
         }
         public IActionResult CreateLecture()
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
 
             Lecture lecture = new Lecture();
 
             return PartialView("CreateLecture", lecture);
         }
+
+        public IActionResult CreateLesson()
+        {
+            USOSContext context = this.initContext();
+
+            CreateLessonView lesson = new CreateLessonView();
+
+            lesson.lectures = context.Lecture.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+            lesson.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+            IList<AppUser> lecturers = _userManager.GetUsersInRoleAsync("Lecturer").Result;
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach(AppUser user in lecturers)
+            {
+                list.Add(new SelectListItem() { Value = user.UserName, Text = user.UserName});
+            }
+            lesson.lecturers = list;
+            return PartialView("CreateLesson", lesson);
+        }
+        [HttpPost]
+        public IActionResult CreateLesson(CreateLessonView lecture)
+        {
+            USOSContext context = this.initContext();
+
+            Lesson newLesson = new Lesson();
+            newLesson.lecture = context.Lecture.Find(Convert.ToInt32(lecture.lectureID));
+            newLesson.lecturer = _userManager.FindByNameAsync(lecture.lecturerID).Result;
+            context.Lesson.Add(newLesson);
+            context.Entry(newLesson.lecturer).State = EntityState.Unchanged;
+
+            foreach (int g in lecture.group)
+            {
+                Group group = context.Group.Find(g);
+                LessonsGroup newLessonGroup = new LessonsGroup();
+                newLessonGroup.group = group;
+                newLessonGroup.lesson = newLesson;
+                context.LessonsGroup.Add(newLessonGroup);
+            }
+            context.SaveChanges();
+            return RedirectToAction("Lessons", "Admin");
+        }
         [HttpPost]
         public IActionResult CreateLecture(Lecture model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
+            
             Lecture newLecture = new Lecture();
 
             Lecture result = context.Lecture.Find(model.ID);
@@ -211,9 +239,7 @@ namespace USOS.Controllers
         }
         public IActionResult CreateGroup()
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
 
             Group group = new Group();
 
@@ -222,9 +248,8 @@ namespace USOS.Controllers
         [HttpPost]
         public IActionResult CreateGroup(Group model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
-            var context = new USOSContext(options.Options);
+            USOSContext context = this.initContext();
+
             Group newGroup = new Group();
 
             Group result = context.Group.Find(model.ID);
@@ -317,16 +342,55 @@ namespace USOS.Controllers
         {
             return View();
         }
-        public IActionResult Users()
+        public USOSContext initContext()
         {
             DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
             options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            return context;
+        }
+        public IActionResult Lessons()
+        {
+            USOSContext context = this.initContext();
+
+            List<LessonsView> lessonsView = new List<LessonsView>();
+
+            List<Lesson> lessons = context.Lesson.Select(x => new Lesson() { ID = x.ID, lecture = x.lecture, lecturer = x.lecturer }).ToList();
+            foreach(Lesson lesson in lessons)
+            {
+                LessonsView view = new LessonsView();
+                view.ID = lesson.ID;
+                view.LectureID = lesson.lecture.ID;
+                view.LectureName = lesson.lecture.Name;
+                view.LecturerName = lesson.lecturer.UserName;
+                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();//.Select(x => new LessonsGroup(x)).ToList();
+                foreach (LessonsGroup lg in lessonsGroup)
+                {
+                    if (view.GroupName == null)
+                    {
+                        view.GroupName += lg.group.Name;
+                        view.GroupID = Convert.ToString(lg.group.ID);
+                    }
+                    else
+                    {
+                        view.GroupName += "," + lg.group.Name;
+                        view.GroupID = "," + Convert.ToString(lg.group.ID);
+                    }
+                }
+                lessonsView.Add(view);
+            }
+            return View(lessonsView);
+        }
+        public IActionResult Users()
+        {
             if (!User.IsInRole("Admin"))
                 return RedirectToAction("Index", "Home");
 
+            USOSContext context = this.initContext();
             var userRoles = new List<AdminUsersView>();
-            var context = new USOSContext(options.Options);
             var userStore = new UserStore<AppUser>(context);
+            
 
             //Get all the usernames
             foreach (var user in userStore.Users)

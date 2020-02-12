@@ -121,7 +121,7 @@ namespace USOS.Controllers
         }
         public async Task<IActionResult> DeleteFile(string filename)
         {
-
+            return View();
         }
 
 
