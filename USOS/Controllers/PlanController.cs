@@ -121,6 +121,23 @@ namespace USOS.Controllers
         }
         public async Task<IActionResult> DeleteFile(string filename)
         {
+            
+            if (filename == null)
+                return Content("filename not present");
+
+            var path = Path.Combine(
+                           Directory.GetCurrentDirectory(),
+                           "wwwroot/Data", filename);
+            FileInfo fi = new FileInfo(path);
+            if(fi != null)
+            {
+                System.IO.File.Delete(path);
+                fi.Delete();
+            }
+            
+           
+
+            return RedirectToAction("Plan");
 
         }
 
