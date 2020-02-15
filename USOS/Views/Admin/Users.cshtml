@@ -5,9 +5,9 @@
 }
 
 @{
-    ViewData["Title"] = "Admin";
-    var modalID = "Admin";
-    var areaModalID = "Admin-label";
+    ViewData["Title"] = "User";
+    var modalID = "User";
+    var areaModalID = "User-label";
 }
 
 
@@ -17,8 +17,8 @@
 <h2>Użytkownicy</h2>
 <div>
     <div class="btn-group">
-        <a id="createLine" data-toggle="modal" asp-action="Create" data-target="#@modalID" class="btn btn-primary">
-            <i class="glyphicon glyphicon-plus"></i>  Add Line
+        <a id="createLine" data-toggle="modal" asp-action="CreateUser" data-target="#@modalID" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Dodaj użytkownika
         </a>
     </div>
 </div>
@@ -35,10 +35,10 @@
             <td>@user.UserName</td>
             <td>@string.Join(",", user.Role.ToArray())</td>
             <td>
-                <a id="editLine" data-toggle="modal" asp-action="Edit" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edit</a>
+                <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
             </td>
             <td>
-                <a id="deleteLine" asp-action="Delete" asp-route-userName="@user.UserName" class="btn btn-primary">Delete</a>
+                <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
             </td>
         </tr>
     }

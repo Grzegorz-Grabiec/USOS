@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Lecture";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<USOS.Models.Lecture>
+
+@{
+    ViewData["Title"] = "Lecture";
+    var modalID = "Lecture";
+    var areaModalID = "Lecture-label";
+}
+
+<h2>Przedmioty</h2>
+<div>
+    <div class="btn-group">
+        <a id="createLine" data-toggle="modal" asp-action="CreateLecture" data-target="#@modalID" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Dodaj przedmiot
+        </a>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>ID</td>
+        <td>Nazwa</td>
+    </tr>
+
+
+    @foreach (var group in Model.ToList())
+    {
+        <tr>
+            <td>@group.ID</td>
+            <td>@group.Name</td>
+            <td>
+                <a id="editLine" data-toggle="modal" asp-action="EditLecture" asp-route-ID="@group.ID" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+            </td>
+            <td>
+                <a id="deleteLine" asp-action="DeleteLecture" asp-route-ID="@group.ID" class="btn btn-primary">Usuń</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@await Html.PartialAsync("_Modal", new Modal
+   {
+       ID = modalID,
+       AreaLabelID = areaModalID,
+       Size = ModalSize.Medium
+   })
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}

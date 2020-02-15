@@ -9,8 +9,8 @@ namespace USOS.Models
     {
         [key]
         public int ID { get; set; }
-        public AppUser lecturer { get; set; }
-        public Lecture lecture { get; set; }
+        public virtual AppUser lecturer { get; set; }
+        public virtual Lecture lecture { get; set; }
 
     }
 }

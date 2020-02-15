@@ -1,6 +1,6 @@
 ﻿@model AdminUsersView
 
-<form asp-action="Create">
+<form asp-action="CreateUser">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Create User</h4>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="Admin">Cancel</button>
+        <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="User">Cancel</button>
         <button class="btn btn-success" id="Submit" type="submit">Submit</button>
     </div>
 </form>
