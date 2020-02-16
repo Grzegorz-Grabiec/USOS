@@ -11,5 +11,18 @@ namespace USOS.Models
         public int ID { get; set; }
         public Lesson lesson { get; set; }
         public Group group { get; set; }
+
+        public LessonsGroup()
+        {
+
+        }
+
+        public LessonsGroup(LessonsGroup _LessonsGroup)
+        {
+            ID = _LessonsGroup.ID;
+            group = _LessonsGroup.group;
+            lesson = _LessonsGroup.lesson;
+        }
     }
+    
 }

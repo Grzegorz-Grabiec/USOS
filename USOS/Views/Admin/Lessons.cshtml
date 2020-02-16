@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Lessons";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewData["Title"] = "Lesson";
+    var modalID = "Lesson";
+    var areaModalID = "Lesson-label";
+}
+@model IEnumerable<USOS.Models.LessonsView>
+
+<h2>Zajęcia</h2>
+
+<div>
+    <div class="btn-group">
+        <a id="createLesson" data-toggle="modal" asp-action="CreateLesson" data-target="#@modalID" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Dodaj Zajęcia
+        </a>
+    </div>
+</div>
+
+@(Html
+.Grid(Model)
+.Build(columns =>
+{
+    columns.Add(model => model.LectureName).Titled("Przedmiot");
+    columns.Add(model => model.LecturerName).Titled("Wykładowca");
+    columns.Add(model => model.GroupName).Titled("Grupy");
+
+})
+.Filterable()
+.Sortable()
+.Pageable()
+)
+
+@await Html.PartialAsync("_Modal", new Modal
+   {
+       ID = modalID,
+       AreaLabelID = areaModalID,
+       Size = ModalSize.Medium
+   })
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
