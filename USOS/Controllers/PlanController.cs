@@ -119,10 +119,10 @@ namespace USOS.Controllers
                 {".csv", "text/csv"}
             };
         }
-        public async Task<IActionResult> DeleteFile(string filename)
-        {
+        //public async Task<IActionResult> DeleteFile(string filename)
+        //{
 
-        }
+       // }
 
 
     }

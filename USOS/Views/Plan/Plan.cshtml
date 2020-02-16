@@ -10,25 +10,28 @@
 
             @foreach (var file in ViewBag.file3)
             {
-                <a href="~/Data/@System.IO.Path.GetFileName(file)">
-                       
-                    <div class="container-fluid">
-                        
-                            <div class="p-3 mb-2 bg-warning text-dark" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
-                                
-                                    <div class="container">
-                                        <img src="~/images/Kalendarz.png" height="50" width="50" />
-                                        <a href="~/Data/@System.IO.Path.GetFileName(file)">@System.IO.Path.GetFileName(file)</a>
-                                        <br />
-                                    </div>
-                              
+                
+                    <a href="~/Data/@System.IO.Path.GetFileName(file)">
+                        <div class="grow">
+                            <div class="container-fluid">
+
+                                <div class="p-3 mb-2 bg-warning text-dark" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+
+
+                                    <img src="~/images/Kalendarz.png" height="50" width="50" />
+                                    <p>@System.IO.Path.GetFileName(file)</p>
+                                    <br />
+
+
+                                </div>
                             </div>
-                       
-                    </div>       
-                        
-                </a>
+
+
+                        </div>
+                    </a>
+                
             }
 
-            </div>
+        </div>
 
 </form> 
