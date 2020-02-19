@@ -65,7 +65,50 @@ namespace USOS.Controllers
             context.SaveChanges();
             return RedirectToAction("Groups", "Admin");
         }
-            public IActionResult EditUser(string userName)
+
+        public IActionResult EditStudentGroup(string userName)
+        {
+            AppUser editUser = _userManager.FindByNameAsync(userName).Result;
+            USOSContext context = this.initContext();
+            EditStudentGroup model = new EditStudentGroup();
+            model.userName = editUser.UserName;
+            model.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+
+            return PartialView("EditStudentGroup", model);
+        }
+        [HttpPost]
+        public IActionResult EditStudentGroup(EditStudentGroup model)
+        {
+            USOSContext context = this.initContext();
+            AppUser student = _userManager.FindByNameAsync(model.userName).Result;
+            var select  = context.StudentGroup.Where(x => x.appUser.UserName == model.userName).Select(x => new StudentGroup() {ID = x.ID,appUser = x.appUser,group = x.group });
+            context.StudentGroup.RemoveRange(select);
+            /* if (select.Count() > 0)
+            {
+                List<StudentGroup> oldGroups = select.ToList();
+                foreach (StudentGroup old in oldGroups)
+                {
+                    context.StudentGroup.Remove(old);
+                }
+            }*/
+            foreach (int groupId in model.group)
+            {
+                Group group = context.Group.Find(groupId);
+                if(group != null)
+                {
+                    StudentGroup newStudentGroup = new StudentGroup();
+                    newStudentGroup.group       = group;
+                    newStudentGroup.appUser = student;
+                    context.StudentGroup.Add(newStudentGroup);
+                    context.Entry(newStudentGroup.group).State = EntityState.Unchanged;
+                    context.Entry(newStudentGroup.appUser).State = EntityState.Unchanged;
+                }
+            }
+            context.SaveChanges();
+
+            return RedirectToAction("Users", "Admin");
+        }
+        public IActionResult EditUser(string userName)
         {
             AppUser editUser = _userManager.FindByNameAsync(userName).Result;
             var userEdit = new AdminUsersView();
@@ -401,6 +444,15 @@ namespace USOS.Controllers
                     Role = new List<string>()
                     //Role = _userManager.GetRolesAsync(user).ToString()
                 };
+                if(_userManager.IsInRoleAsync(user,"Student").Result)
+                {
+                    var list = context.StudentGroup.Where(x => x.appUser == user).Include(x => x.group).ToList();
+                    foreach (StudentGroup s in list)
+                    {
+                        r.groups += s.group.Name + " ";
+                    }
+                }
+
                 var roles = _userManager.GetRolesAsync(user).Result;
                 string roleStr = "";
                 foreach (var role in roles)
