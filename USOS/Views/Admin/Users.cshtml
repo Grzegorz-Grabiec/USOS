@@ -22,25 +22,123 @@
         </a>
     </div>
 </div>
+<h2>Studenci</h2>
 <table class="table table-bordered table-striped">
     <tr>
         <td>Użytkownik</td>
-        <td>Rola</td>
+        <td>Email</td>
+        <td>Telefon</td>
+        <td>Grupy</td>
     </tr>
 
 
     @foreach (var user in Model.ToList())
     {
-        <tr>
-            <td>@user.UserName</td>
-            <td>@string.Join(",", user.Role.ToArray())</td>
-            <td>
-                <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
-            </td>
-            <td>
-                <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
-            </td>
-        </tr>
+        if (user.Role.ToArray().Contains("Student"))
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.groups</td>
+                <!--<td>@string.Join(",", user.Role.ToArray())</td>-->
+                <td>
+                    <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+                </td>
+                <td>
+                    <a id="editLine" data-toggle="modal" asp-action="EditStudentGroup" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Grupy</a>
+                </td>
+                <td>
+                    <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+<h2>Wykładowcy</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>Użytkownik</td>
+        <td>Email</td>
+        <td>Telefon</td>
+    </tr>
+
+
+    @foreach (var user in Model.ToList())
+    {
+        if (user.Role.ToArray().Contains("Lecturer"))
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <!--<td>@string.Join(",", user.Role.ToArray())</td>-->
+                <td>
+                    <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+                </td>
+                <td>
+                    <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<h2>Pracownicy</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>Użytkownik</td>
+        <td>Email</td>
+        <td>Telefon</td>
+    </tr>
+
+
+    @foreach (var user in Model.ToList())
+    {
+        if (user.Role.ToArray().Contains("Worker"))
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <!--<td>@string.Join(",", user.Role.ToArray())</td>-->
+                <td>
+                    <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+                </td>
+                <td>
+                    <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<h2>Administratorzy</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>Użytkownik</td>
+        <td>Email</td>
+        <td>Telefon</td>
+    </tr>
+
+
+    @foreach (var user in Model.ToList())
+    {
+        if (user.Role.ToArray().Contains("Admin"))
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <!--<td>@string.Join(",", user.Role.ToArray())</td>-->
+                <td>
+                    <a id="editLine" data-toggle="modal" asp-action="EditUser" asp-route-userName="@user.UserName" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
+                </td>
+                <td>
+                    <a id="deleteLine" asp-action="DeleteUser" asp-route-userName="@user.UserName" class="btn btn-primary">Usuń</a>
+                </td>
+            </tr>
+        }
     }
 </table>
 
