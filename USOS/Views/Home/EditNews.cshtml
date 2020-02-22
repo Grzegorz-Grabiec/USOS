@@ -1,6 +1,7 @@
 ﻿@model USOS.Models.NewsView
 
-
+@using (Html.BeginForm())
+{
     <form asp-action="EditNews">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -9,17 +10,18 @@
         <div class="modal-body form-horizontal">
             <div class="row">
                 <div class="col-lg-12">
-
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ID)
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group col-lg-10">
                         <label asp-for="Header" class="control-label"></label>
-                        <input asp-for="Header" class="form-control" />
-                        <span asp-validation-for="Header" class="text-danger"></span>
+                        @Html.EditorFor(model => model.Header, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Header, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group col-lg-10">
                         <label asp-for="Text" class="control-label"></label>
-                        <input asp-for="Text" class="form-control" />
-                        <span asp-validation-for="Text" class="text-danger"></span>
+                        @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group col-lg-10">
                         <label asp-for="Date" class="control-label"></label>
@@ -36,8 +38,12 @@
             <button class="btn btn-success" id="Submit" type="submit">Submit</button>
         </div>
     </form>
-      
- 
+}
+
+
 
 
 @await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+
