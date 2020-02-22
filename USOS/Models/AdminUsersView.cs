@@ -25,5 +25,6 @@ namespace USOS.Models
         public IEnumerable<SelectListItem> Roles { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string groups { get; set; }
     }
 }

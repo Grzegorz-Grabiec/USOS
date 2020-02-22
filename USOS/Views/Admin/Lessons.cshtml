@@ -26,6 +26,7 @@
     columns.Add(model => model.LectureName).Titled("Przedmiot");
     columns.Add(model => model.LecturerName).Titled("Wykładowca");
     columns.Add(model => model.GroupName).Titled("Grupy");
+    columns.Add().RenderedAs(o => Html.ActionLink("Edit", "Admin")).Titled("Edit");
 
 })
 .Filterable()

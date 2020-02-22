@@ -29,7 +29,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <p>
-
+                            <a id="deleteLine" asp-action="DeleteNews" asp-route-id="@item.ID"  class="btn btn-primary">Delete</a>
                             <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
                         </p>
                     }
