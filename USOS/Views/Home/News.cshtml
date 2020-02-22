@@ -29,9 +29,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <p>
-                            @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+
                             <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
                         </p>
                     }
