@@ -29,6 +29,41 @@ namespace USOS.Controllers
             _provider = provider;
         }
 
+        [HttpGet]
+        public PartialViewResult IndexGrid()
+        {
+            USOSContext context = this.initContext();
+
+            List<LessonsView> lessonsView = new List<LessonsView>();
+
+            List<Lesson> lessons = context.Lesson.Select(x => new Lesson() { ID = x.ID, lecture = x.lecture, lecturer = x.lecturer }).ToList();
+            foreach (Lesson lesson in lessons)
+            {
+                LessonsView view = new LessonsView();
+                view.ID = lesson.ID;
+                view.LectureID = lesson.lecture.ID;
+                view.LectureName = lesson.lecture.Name;
+                view.LecturerName = lesson.lecturer.UserName;
+                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();//.Select(x => new LessonsGroup(x)).ToList();
+                foreach (LessonsGroup lg in lessonsGroup)
+                {
+                    if (view.GroupName == null)
+                    {
+                        view.GroupName += lg.group.Name;
+                        view.GroupID = Convert.ToString(lg.group.ID);
+                    }
+                    else
+                    {
+                        view.GroupName += "," + lg.group.Name;
+                        view.GroupID = "," + Convert.ToString(lg.group.ID);
+                    }
+                }
+                lessonsView.Add(view);
+            }
+            // Only grid query values will be available here.
+            return PartialView("_IndexGrid", lessonsView);
+        }
+
         public IActionResult EditLecture(int ID)
         {
             USOSContext context = this.initContext();
