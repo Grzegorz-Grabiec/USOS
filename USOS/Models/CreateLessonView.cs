@@ -17,6 +17,7 @@ namespace USOS.Models
         public IEnumerable<SelectListItem> groups { get; set; }
         public string lecturerID { get; set; }
         public int lectureID { get; set; }
+        public int lessonID { get; set; }
         [NotMapped]
         public List<int> group { get; set; }
     }

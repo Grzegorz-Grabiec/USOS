@@ -31,7 +31,7 @@
     columns.Add(model => model.LectureName).Titled("Przedmiot");
     columns.Add(model => model.LecturerName).Titled("Wykładowca");
     columns.Add(model => model.GroupName).Titled("Grupy");
-    columns.Add().RenderedAs(o => Html.ActionLink("Edit", "Admin")).Titled("Edit");
+    columns.Add().RenderedAs(model => Html.ActionLink("Edit", "EditLesson", "Admin", new { ID = model.ID}, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Lesson", id = "EditLesson" })).Titled("Edit");
 
 })
 .Filterable()

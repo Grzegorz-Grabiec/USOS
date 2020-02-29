@@ -118,14 +118,7 @@ namespace USOS.Controllers
             AppUser student = _userManager.FindByNameAsync(model.userName).Result;
             var select  = context.StudentGroup.Where(x => x.appUser.UserName == model.userName).Select(x => new StudentGroup() {ID = x.ID,appUser = x.appUser,group = x.group });
             context.StudentGroup.RemoveRange(select);
-            /* if (select.Count() > 0)
-            {
-                List<StudentGroup> oldGroups = select.ToList();
-                foreach (StudentGroup old in oldGroups)
-                {
-                    context.StudentGroup.Remove(old);
-                }
-            }*/
+
             foreach (int groupId in model.group)
             {
                 Group group = context.Group.Find(groupId);
@@ -257,7 +250,63 @@ namespace USOS.Controllers
 
             return PartialView("CreateLecture", lecture);
         }
+        public IActionResult EditLesson(int ID)
+        {
+            USOSContext context = this.initContext();
+            CreateLessonView lesson = new CreateLessonView();
+            Lesson editLesson = context.Lesson.Where(x => x.ID == ID).Include(x => x.lecture).Include(x => x.lecturer).First();
+            
+            lesson.lectures = context.Lecture.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+            lesson.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
 
+            IList<AppUser> lecturers = _userManager.GetUsersInRoleAsync("Lecturer").Result;
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (AppUser user in lecturers)
+            {
+                SelectListItem item = new SelectListItem() { Value = user.UserName, Text = user.UserName };
+
+                list.Add(item);
+            }
+
+            foreach (SelectListItem g in lesson.groups)
+            {
+                var select = context.LessonsGroup.Where(x => x.lesson.ID == ID && x.group.ID == Convert.ToInt32(g.Value)).Include(x => x.lesson).Include(x => x.group).Select(x => new LessonsGroup(x));
+
+                if (select.Count() > 0)
+                    g.Selected = true;
+            }
+            lesson.lecturers = list;
+            lesson.lectureID = editLesson.lecture.ID;
+            lesson.lecturerID = editLesson.lecturer.UserName;
+            lesson.lessonID = ID;
+            return PartialView("EditLesson", lesson);
+        }
+        [HttpPost]
+        public IActionResult EditLesson(CreateLessonView model)
+        {
+            USOSContext context = this.initContext();
+            Lesson editLesson = context.Lesson.Find(model.lessonID);
+            if(model.lectureID != null)
+                editLesson.lecture = context.Lecture.Find(Convert.ToInt32(model.lectureID));
+            if(model.lecturerID != null)
+                editLesson.lecturer = _userManager.FindByNameAsync(model.lecturerID).Result;
+            var select = context.LessonsGroup.Where(x => x.lesson.ID == model.lessonID).Select(x => new LessonsGroup(x));
+            context.LessonsGroup.RemoveRange(select);
+            if (model.group != null)
+            {
+                foreach (int g in model.group)
+                {
+                    Group group = context.Group.Find(g);
+                    LessonsGroup newLessonGroup = new LessonsGroup();
+                    newLessonGroup.group = group;
+                    newLessonGroup.lesson = editLesson;
+                    context.LessonsGroup.Add(newLessonGroup);
+                }
+            }
+            context.Entry(editLesson.lecturer).State = EntityState.Unchanged;
+            context.SaveChanges();
+            return RedirectToAction("Lessons", "Admin");
+        }
         public IActionResult CreateLesson()
         {
             USOSContext context = this.initContext();
