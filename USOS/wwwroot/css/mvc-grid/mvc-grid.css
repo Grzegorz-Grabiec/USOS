@@ -31,6 +31,9 @@
     background-color: #f7f7f7;
     position: relative;
 }
+.mvc-grid tr {    
+    background-color: #f7f7f7;
+}
 
 .mvc-grid th,
 .mvc-grid td {

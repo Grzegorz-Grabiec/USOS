@@ -30,18 +30,20 @@ namespace USOS.Controllers
         {
             return View();
         }
-        public IActionResult Akitek()
+        public USOSContext initContext()
         {
-            return View();
+            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
+            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            var context = new USOSContext(options.Options);
+
+            return context;
         }
 
         [HttpGet]
         public ActionResult News()
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
             List<NewsView> News;
-            var context = new USOSContext(options.Options);
             News = context.News.ToArray().OrderBy(x => x.ID).Select(x => new NewsView(x)).ToList();
             return View(News);
         }
@@ -54,15 +56,14 @@ namespace USOS.Controllers
         [HttpPost]
         public ActionResult CreateNews(NewsView model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = "Dodano";
                 return View(model);
             }
 
-            using (var context = new USOSContext(options.Options))
+            using (context)
             {
                 News Obj = new News();
 
@@ -87,10 +88,9 @@ namespace USOS.Controllers
         public ActionResult EditNews(int id)
         {
             NewsView model;
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
 
-            using (var context = new USOSContext(options.Options))
+            using (context)
             {
 
                 News Obj = context.News.Find(id);
@@ -105,20 +105,19 @@ namespace USOS.Controllers
             }
 
 
-            return PartialView();
+            return PartialView(model);
         }
 
         [HttpPost]
         public ActionResult EditNews(NewsView model)
         {
-            DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
-            options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
+            USOSContext context = this.initContext();
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            using (var context = new USOSContext(options.Options))
+            using (context)
             {
 
                 int id = model.ID;
@@ -141,6 +140,19 @@ namespace USOS.Controllers
 
                 context.SaveChanges();
             }
+            return RedirectToAction("News");
+        }
+        public ActionResult DeleteNews(int id)
+        {
+            USOSContext context = this.initContext();
+            using (context)
+            {
+               
+                News Obj = context.News.Find(id);
+                context.News.Remove(Obj);
+                context.SaveChanges();
+            }
+
             return RedirectToAction("News");
         }
 

@@ -15,7 +15,7 @@ namespace USOS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -186,7 +186,8 @@ namespace USOS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
@@ -199,7 +200,8 @@ namespace USOS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
@@ -242,6 +244,29 @@ namespace USOS.Migrations
                     b.HasIndex("lessonID");
 
                     b.ToTable("LessonsGroup");
+                });
+
+            modelBuilder.Entity("USOS.Models.LessonStudentMark", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("LessonID");
+
+                    b.Property<int?>("MarkID");
+
+                    b.Property<string>("UsernameId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LessonID");
+
+                    b.HasIndex("MarkID");
+
+                    b.HasIndex("UsernameId");
+
+                    b.ToTable("LessonStudentMark");
                 });
 
             modelBuilder.Entity("USOS.Models.Mark", b =>
@@ -360,6 +385,21 @@ namespace USOS.Migrations
                     b.HasOne("USOS.Models.Lesson", "lesson")
                         .WithMany()
                         .HasForeignKey("lessonID");
+                });
+
+            modelBuilder.Entity("USOS.Models.LessonStudentMark", b =>
+                {
+                    b.HasOne("USOS.Models.Lesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonID");
+
+                    b.HasOne("USOS.Models.Mark", "Mark")
+                        .WithMany()
+                        .HasForeignKey("MarkID");
+
+                    b.HasOne("USOS.Models.AppUser", "Username")
+                        .WithMany()
+                        .HasForeignKey("UsernameId");
                 });
 
             modelBuilder.Entity("USOS.Models.StudentGroup", b =>

@@ -21,6 +21,8 @@ namespace USOS.Models
         public DbSet<USOS.Models.StudentGroup> StudentGroup { get; set; }
         public DbSet<USOS.Models.Lesson> Lesson { get; set; }
         public DbSet<USOS.Models.LessonsGroup> LessonsGroup { get; set; }
+        public DbSet<USOS.Models.LessonStudentMark> LessonStudentMark { get; set; }
+        public DbSet<USOS.Models.LessonStudentMarkView> LessonStudentMarkView { get; set; }
         //public DbSet<USOS.Models.AdminUsersView> AdminUsersView { get; set; }
     }
 }

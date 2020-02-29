@@ -1,14 +1,15 @@
 ﻿@model LoginModel
-<head>
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/css/animate.min.css" rel="stylesheet" />
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet" />
-    <script src="~/js/formAnimation.js"></script>
-    <script src="~/js/jquery-2.2.3.min.js"></script>
-    <script src="~/js/jquery.validate.min.js"></script>
-    <script src="~/js/shake.js"></script>
-</head>
+    <head>
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/animate.min.css" rel="stylesheet" />
+        <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="~/css/style-home.css" rel="stylesheet" />
+        <script src="~/js/formAnimation.js"></script>
+        <script src="~/js/jquery-2.2.3.min.js"></script>
+        <script src="~/js/jquery.validate.min.js"></script>
+        <script src="~/js/shake.js"></script>
+    </head>
 <body>
     <!-- main-agileits -->
     <div class="agileits">
@@ -17,9 +18,11 @@
         <br />
         <div asp-validation-summary="All"></div>
         <br />
-        <h1>Zaloguj się</h1>
+        
         <div class="w3-agileits-info">
-            <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Login" method="post">
+            <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Login" method="post" style="width:100%;">
+                <h1>Zaloguj się</h1>
+                <br />
                 <p class="w3agileits"></p>
                 <br />
                 <div asp-validation-summary="All"></div>
@@ -38,14 +41,15 @@
                     <span asp-validation-for="Password" class='glyphicon glyphicon-ok form-control-feedback'></span>
                     <br />
                     <div>
-                        <label asp-for="RememberMe"></label>
-                        <input asp-for="RememberMe" >
+                        <label asp-for="RememberMe">Zapamiętaj mnie</label>
+                        <input asp-for="RememberMe">
                         <span asp-validation-for="RememberMe"></span>
                     </div>
+                    <br />
                     <div class='submit w3-agile'>
                         <input class='btn btn-lg' type='submit' value='Zaloguj'>
                     </div>
-            </form>
+</form>
         </div>
     </div>
     <!-- //agileits -->

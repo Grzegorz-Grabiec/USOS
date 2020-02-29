@@ -13,7 +13,12 @@
 
 @model IEnumerable<USOS.Models.AdminUsersView>
 <div id="modal-placeholder"></div>
+<head>
 
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
 <h2>Użytkownicy</h2>
 <div>
     <div class="btn-group">
@@ -23,7 +28,7 @@
     </div>
 </div>
 <h2>Studenci</h2>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <tr>
         <td>Użytkownik</td>
         <td>Email</td>
@@ -56,7 +61,7 @@
     }
 </table>
 <h2>Wykładowcy</h2>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <tr>
         <td>Użytkownik</td>
         <td>Email</td>
@@ -85,7 +90,7 @@
 </table>
 
 <h2>Pracownicy</h2>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <tr>
         <td>Użytkownik</td>
         <td>Email</td>
@@ -114,7 +119,7 @@
 </table>
 
 <h2>Administratorzy</h2>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <tr>
         <td>Użytkownik</td>
         <td>Email</td>
@@ -141,6 +146,11 @@
         }
     }
 </table>
+<style>
+    .table {
+        background-color: #f7f7f7;
+    }
+</style>
 
 @await Html.PartialAsync("_Modal", new Modal
    {

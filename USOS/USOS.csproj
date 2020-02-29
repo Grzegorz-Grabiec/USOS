@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200209133202_09.02.2020.cs" />
+    <Compile Remove="Migrations\20200209133202_09.02.2020.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
@@ -14,6 +19,9 @@
 
   <ItemGroup>
     <Content Update="Views\Login\Login.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Mark\EditMark.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Shared\_ModalScriptsInit.cshtml">
@@ -29,5 +37,7 @@
     <None Include="wwwroot\Data\dzienne_inz_plan_2019_20_sem_I%281%29.xls" />
     <None Include="wwwroot\Data\sesja_sem_2_6_2018_2019_sem_II.xls" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4bootstrap_4dist_4css_4bootstrap_1css_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

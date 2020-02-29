@@ -5,8 +5,13 @@
     var modalID = "Admin";
     var areaModalID = "Admin-label";
 }
+<head>
 
-<h2>News</h2>
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
+<h2>Aktualności</h2>
 @if (User.IsInRole("Admin"))
 {
     <p>
@@ -17,9 +22,9 @@
 
     @foreach (var item in Model)
     {
-    
-        <div class="container-fluid" >
- 
+
+        <div class="container-fluid">
+
             <div class="p-3 mb-2 bg-warning text-dark" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
 
                 <h4>  @Html.DisplayFor(modelItem => item.Header) </h4>
@@ -29,9 +34,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <p>
-                            @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            <a id="deleteLine" asp-action="DeleteNews" asp-route-id="@item.ID" class="btn btn-primary">Delete</a>
                             <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
                         </p>
                     }
@@ -40,7 +43,7 @@
 
             </div>
         </div>
-   
+
 
     }
 

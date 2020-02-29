@@ -1,16 +1,27 @@
 ﻿@model IEnumerable<USOS.Models.Plan>
+<head>
 
-    <form asp-controller="Plan" asp-action="UploadFile" method="post"
-          enctype="multipart/form-data">
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
+
+<form asp-controller="Plan" asp-action="UploadFile" method="post"
+      enctype="multipart/form-data">
+    @if (User.IsInRole("Admin"))
+    {
         <br />
         <input type="file" name="file" />
         <br />
-        <button type="submit">Upload File</button>
+        <button type="submit">Dodaj Plik</button>
         <br />
-        <div>
+    }
+    <div>
 
-            @foreach (var file in ViewBag.file3)
-            {
+
+
+        @foreach (var file in ViewBag.file3)
+        {
             <a href="~/Data/@System.IO.Path.GetFileName(file)">
 
                 <div class="container-fluid">
@@ -23,17 +34,20 @@
                             <br />
 
                         </div>
-                        <a id="Delete" href="@Url.Action("DeleteFile","Plan",new { filename = @System.IO.Path.GetFileName(file) })" class="btn btn-primary" style="position: absolute; right: 10px; top: 8px">Delete</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a id="Delete" href="@Url.Action("DeleteFile", "Plan", new { filename = @System.IO.Path.GetFileName(file) })" class="btn btn-primary" style="position: absolute; right: 10px; top: 8px">Delete</a>
+                        }
                     </div>
 
-                   
+
                 </div>
-                
+
 
             </a>
-            }
+        }
 
-        </div>
+    </div>
 
 
-    </form> 
+</form> 

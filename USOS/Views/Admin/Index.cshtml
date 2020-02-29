@@ -2,28 +2,36 @@
     ViewData["Title"] = "Users";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<head>
+
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
 
 <h2>Administracja</h2>
-
+<div class="stars small"></div>
+<div class="stars medium"></div>
+<div class="stars large"></div>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-                <a asp-action="Users" class="btn btn-sq-lg btn-primary">
-                    <img src="~/images/UserLogoSmall.png" alt="ASP.NET" class="img-responsive" />
-                    <h4 class="h4">Użytkownicy</h4>
-                </a>
-                <a asp-action="Groups" class="btn btn-sq-lg btn-success">
-                    <img src="~/images/GroupLogoSmall.png" alt="ASP.NET" class="img-responsive" />
-                    <h4 class="h4">Grupy</h4>
-                </a>
-                <a asp-action="Lectures" class="btn btn-sq-lg btn-info">
-                    <img src="~/images/LecturesLogoSmall.png" alt="ASP.NET" class="img-responsive" />
-                    <h4 class="h4">Przedmioty</h4>
-                </a>
-                <a asp-action="Lessons" class="btn btn-sq-lg btn-warning">
-                    <img src="~/images/LessonsLogosmall.png" alt="ASP.NET" class="img-responsive" />
-                    <h4 class="h4">Zajęcia</h4>
-                </a>
+            <a asp-action="Users" class="btn btn-sq-lg btn-primary">
+                <img src="~/images/UserLogoSmall.png" alt="ASP.NET" class="img-responsive" />
+                <h4 class="h4">Użytkownicy</h4>
+            </a>
+            <a asp-action="Groups" class="btn btn-sq-lg btn-success">
+                <img src="~/images/GroupLogoSmall.png" alt="ASP.NET" class="img-responsive" />
+                <h4 class="h4">Grupy</h4>
+            </a>
+            <a asp-action="Lectures" class="btn btn-sq-lg btn-info">
+                <img src="~/images/LecturesLogoSmall.png" alt="ASP.NET" class="img-responsive" />
+                <h4 class="h4">Przedmioty</h4>
+            </a>
+            <a asp-action="Lessons" class="btn btn-sq-lg btn-warning">
+                <img src="~/images/LessonsLogosmall.png" alt="ASP.NET" class="img-responsive" />
+                <h4 class="h4">Zajęcia</h4>
+            </a>
         </div>
     </div>
 </div>
@@ -32,21 +40,22 @@
     .btn-sq-lg {
         width: 250px !important;
         height: 250px !important;
-        background-color:gainsboro;
-        border-color : black;
+        background-color: #f7f7f7;
+        border-color: black;
         font-size: 10px;
     }
-    .h4
-    {
+
+    .h4 {
         color: black;
-        font:bold;
+        font: bold;
     }
-        .btn-sq-lg:hover {
-            border: 3px solid white;
-            border-color : black;
-            background-color:gray;
-            font-weight: 800;
-        }
+
+    .btn-sq-lg:hover {
+        border: 3px solid white;
+        border-color: black;
+        background-color: gray;
+        font-weight: 800;
+    }
 </style>
 @section Scripts {
 
