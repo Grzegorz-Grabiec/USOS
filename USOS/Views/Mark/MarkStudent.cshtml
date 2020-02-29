@@ -1,0 +1,22 @@
+﻿@model IEnumerable<USOS.Models.LessonStudentMarkView>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Marks</h2>
+
+@(Html
+.Grid(Model)
+.Build(columns =>
+{
+    columns.Add(model => model.Lesson).Titled("Przedmiot");
+    columns.Add(model => model.Mark).Titled("Ocena");
+})
+.Filterable()
+.Sortable()
+.Pageable()
+)
+
+

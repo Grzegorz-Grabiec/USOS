@@ -10,8 +10,18 @@ namespace USOS.Models
     {
         [key]
         [Required]
-        public int ID{ get; set; }
+        public int ID { get; set; }
         [Required]
         public string Name { get; set; }
+        public Group()
+        {
+
+        }
+        public Group(Group _group)
+        {
+            ID = _group.ID;
+            Name = _group.Name;
+            
+        }
     }
 }

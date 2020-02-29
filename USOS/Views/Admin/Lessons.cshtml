@@ -8,7 +8,12 @@
     var areaModalID = "Lesson-label";
 }
 @model IEnumerable<USOS.Models.LessonsView>
+<head>
 
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
 <h2>Zajęcia</h2>
 
 <div>
@@ -33,6 +38,7 @@
 .Sortable()
 .Pageable()
 )
+
 
 @await Html.PartialAsync("_Modal", new Modal
    {

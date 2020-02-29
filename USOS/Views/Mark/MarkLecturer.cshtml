@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<USOS.Models.LessonStudentMarkView>
+
+@{
+    ViewData["Title"] = "Mark";
+    var modalID = "Mark";
+    var areaModalID = "Mark-label";
+}
+<div id="modal-placeholder"></div>
+<head>
+
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
+
+<h2>Marks</h2>
+
+@(Html
+.Grid(Model)
+.Build(columns =>
+{
+columns.Add(model => model.Username).Titled("Student");
+columns.Add(model => model.Lesson).Titled("Przedmiot");
+columns.Add(model => model.Mark).Titled("Ocena");
+columns.Add().RenderedAs(model => Html.ActionLink("Edit", "EditMark", "Mark", new { lessonId = model.LessonID, username = model.Username }, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Mark", id = "EditMark" })).Titled("Edit");
+
+    })
+.Filterable()
+.Sortable()
+.Pageable()
+)
+@await Html.PartialAsync("_Modal", new Modal
+   {
+       ID = modalID,
+       AreaLabelID = areaModalID,
+       Size = ModalSize.Medium
+   })
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+
+}
+<style>
+    .tr {
+        background-color: #f7f7f7;
+    }
+</style>
