@@ -13,19 +13,14 @@
 <body>
     <!-- main-agileits -->
     <div class="agileits">
-        <br />
-        <br />
-        <br />
-        <div asp-validation-summary="All"></div>
-        <br />
+
         
         <div class="w3-agileits-info">
             <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Login" method="post" style="width:100%;">
                 <h1>Zaloguj się</h1>
                 <br />
-                <p class="w3agileits"></p>
-                <br />
-                <div asp-validation-summary="All"></div>
+                
+                <div asp-validation-summary="All" style="color:red"></div>
                 <br />
                 <div class='form-group has-feedback w3ls'>
                     <label asp-for="Login" class='control-label sr-only'>Login</label>
@@ -53,6 +48,11 @@
         </div>
     </div>
     <!-- //agileits -->
+    <style>
+        .ul{
+            color:red;
+        }
+    </style>
   
     <!-- js -->
     <script src="js/jquery-2.2.3.min.js"></script>

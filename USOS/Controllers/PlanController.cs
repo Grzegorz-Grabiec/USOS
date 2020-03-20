@@ -1,12 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Web;
-using System.Data;
-//using System.Web.Mvc;
-using System.Data.SqlClient;
 using System.Collections.Generic;
-using USOS.Models;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -25,10 +19,8 @@ namespace USOS.Controllers
         {
             _host = host;
         }
-
         public IActionResult Plan()
         {
-
             var webRoot = _host.WebRootPath;
             string path2 = _host.WebRootPath + "\\Data";
             var file2 = System.IO.Path.Combine(webRoot  , "~/Data");
@@ -36,8 +28,6 @@ namespace USOS.Controllers
             ViewBag.file3 = files;
             return View();
         }
-
-
         public void ConfigureServices(
            IServiceCollection services)
         {
@@ -47,7 +37,6 @@ namespace USOS.Controllers
 
             services.AddMvc();
         }
-
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env)
@@ -64,17 +53,13 @@ namespace USOS.Controllers
         {
             if (file == null || file.Length == 0)
                 return Content("file not selected");
-
             var path = Path.Combine(
                         Directory.GetCurrentDirectory(), "wwwroot/Data",
-                        file.FileName);
-            
-
+                        file.FileName);          
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-
             return RedirectToAction("Plan");
         }
 
@@ -101,7 +86,6 @@ namespace USOS.Controllers
             var ext = Path.GetExtension(path).ToLowerInvariant();
             return types[ext];
         }
-
         private Dictionary<string, string> GetMimeTypes()
         {
             return new Dictionary<string, string>
@@ -120,8 +104,7 @@ namespace USOS.Controllers
             };
         }
         public async Task<IActionResult> DeleteFile(string filename)
-        {
-            
+        {          
             if (filename == null)
                 return Content("filename not present");
 
@@ -133,15 +116,9 @@ namespace USOS.Controllers
             {
                 System.IO.File.Delete(path);
                 fi.Delete();
-            }
-            
-           
-
+            }         
             return RedirectToAction("Plan");
-
         }
-
-
     }
 }
 

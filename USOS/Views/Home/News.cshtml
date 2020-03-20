@@ -11,11 +11,11 @@
     <link href="~/css/style-home.css" rel="stylesheet" />
 
 </head>
-<h2>Aktualności</h2>
 @if (User.IsInRole("Admin"))
 {
+    <br />
     <p>
-        <a id="createLine" data-toggle="modal" asp-action="CreateNews" data-target="#@modalID" class="btn btn-primary">Create New</a>
+        <a id="createLine" data-toggle="modal" asp-action="CreateNews" data-target="#@modalID" class="btn btn-primary">Dodaj nowe</a>
     </p>
 }
 <table class="table">
@@ -34,8 +34,9 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <p>
-                            <a id="deleteLine" asp-action="DeleteNews" asp-route-id="@item.ID" class="btn btn-primary">Delete</a>
-                            <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edit</a>
+                            <br />
+                            <a id="deleteLine" asp-action="DeleteNews" asp-route-id="@item.ID" class="btn btn-primary">Usuń</a>
+                            <a id="createLine" data-toggle="modal" asp-action="EditNews" asp-route-id="@item.ID" data-target="#@modalID" class="btn btn-primary">Edytuj</a>
                         </p>
                     }
                 </h5>

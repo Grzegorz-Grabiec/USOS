@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="USOS.Models.Account">
+    <Position X="10.5" Y="6.5" Width="1.5" />
+    <AssociationLine Name="AppUser" Type="USOS.Models.AppUser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="6.5" />
+        <Point X="11.25" Y="6.125" />
+        <Point X="10.125" Y="6.125" />
+        <Point X="10.125" Y="4.997" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAACAAAQAAAAAAA=</HashCode>
+      <FileName>Models\Account.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AppUser" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.AppUser">
+    <Position X="9.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AppUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="USOSContext" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.Group">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="StudentGroup" Type="USOS.Models.StudentGroup" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.75" Y="1.125" />
+        <Point X="11.938" Y="1.125" />
+        <Point X="11.938" Y="1.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Group.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="StudentGroup" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.Lecture">
+    <Position X="17.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Lecture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USOS.Models.Lesson">
+    <Position X="14.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAIAAAAAAAAAAgAAAAIAAAA=</HashCode>
+      <FileName>Models\Lesson.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AppUser" />
+      <Property Name="Lecture" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.Mark">
+    <Position X="14" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\Mark.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USOS.Models.News">
+    <Position X="4.5" Y="4.5" Width="1.5" />
+    <AssociationLine Name="USOSContext" Type="USOS.Models.USOSContext" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6" Y="5.188" />
+        <Point X="7.125" Y="5.188" />
+        <Point X="7.125" Y="4.691" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAgAAAAAAAAAAAAEAAAAABAAAACAAAAAA=</HashCode>
+      <FileName>Models\News.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="USOSContext" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.Plan">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAECAAAAAQAAAAAJAAAA=</HashCode>
+      <FileName>Models\Plan.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="USOSContext" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.RoleName">
+    <Position X="8.5" Y="6.5" Width="1.5" />
+    <AssociationLine Name="AppUser" Type="USOS.Models.AppUser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.875" Y="6.5" />
+        <Point X="8.875" Y="4.688" />
+        <Point X="9.25" Y="4.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\RoleName.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AppUser" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.USOSContext" Collapsed="true">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAAAAAAAACAACAAAAAIAAAAgAACAAAICAAA=</HashCode>
+      <FileName>Models\USOSContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USOS.Models.LessonStudentMark">
+    <Position X="12.25" Y="5" Width="1.75" />
+    <AssociationLine Name="AppUser" Type="USOS.Models.AppUser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.25" Y="5.719" />
+        <Point X="11.875" Y="5.719" />
+        <Point X="11.875" Y="4.875" />
+        <Point X="10.75" Y="4.875" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Lesson1" Type="USOS.Models.Lesson" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14" Y="5.625" />
+        <Point X="15.375" Y="5.625" />
+        <Point X="15.375" Y="5.238" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAQAACAIAQAAAEAAAAACAAAAAAAA=</HashCode>
+      <FileName>Models\LessonStudentMark.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AppUser" />
+      <Property Name="Lesson1" />
+      <Property Name="Mark1" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.LessonsGroup">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Lesson" Type="USOS.Models.Lesson" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16.969" Y="2.569" />
+        <Point X="16.969" Y="3.375" />
+        <Point X="15.25" Y="3.375" />
+        <Point X="15.25" Y="3.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAEAAAAAAgAAIAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LessonsGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Lesson" />
+      <Property Name="Group" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="USOS.Models.StudentGroup">
+    <Position X="11.25" Y="1.75" Width="1.5" />
+    <AssociationLine Name="AppUser" Type="USOS.Models.AppUser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.312" Y="3.69" />
+        <Point X="12.312" Y="4.065" />
+        <Point X="11" Y="4.065" />
+        <Point X="11" Y="3.75" />
+        <Point X="9.875" Y="3.75" />
+        <Point X="9.875" Y="4" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAgAAAAAAAAAIAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\StudentGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AppUser" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

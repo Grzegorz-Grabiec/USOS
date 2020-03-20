@@ -11,7 +11,7 @@
     @if (User.IsInRole("Admin"))
     {
         <br />
-        <input type="file" name="file" />
+            <input type="file">
         <br />
         <button type="submit">Dodaj Plik</button>
         <br />
@@ -36,7 +36,7 @@
                         </div>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a id="Delete" href="@Url.Action("DeleteFile", "Plan", new { filename = @System.IO.Path.GetFileName(file) })" class="btn btn-primary" style="position: absolute; right: 10px; top: 8px">Delete</a>
+                            <a id="Delete" href="@Url.Action("DeleteFile", "Plan", new { filename = @System.IO.Path.GetFileName(file) })" class="btn btn-primary" style="position: absolute; right: 10px; top: 8px">Usuń</a>
                         }
                     </div>
 
