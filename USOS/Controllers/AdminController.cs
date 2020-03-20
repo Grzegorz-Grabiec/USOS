@@ -13,6 +13,8 @@ using USOS.Models;
 
 namespace USOS.Controllers
 {
+
+
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -27,10 +29,47 @@ namespace USOS.Controllers
             _provider = provider;
         }
 
+        [HttpGet]
+        public PartialViewResult IndexGrid()
+        {
+            USOSContext context = this.initContext();
+
+            List<LessonsView> lessonsView = new List<LessonsView>();
+
+            List<Lesson> lessons = context.Lesson.Select(x => new Lesson() { ID = x.ID, lecture = x.lecture, lecturer = x.lecturer }).ToList();
+            foreach (Lesson lesson in lessons)
+            {
+                LessonsView view = new LessonsView();
+                view.ID = lesson.ID;
+                view.LectureID = lesson.lecture.ID;
+                view.LectureName = lesson.lecture.Name;
+                view.LecturerName = lesson.lecturer.UserName;
+                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();//.Select(x => new LessonsGroup(x)).ToList();
+                foreach (LessonsGroup lg in lessonsGroup)
+                {
+                    if (view.GroupName == null)
+                    {
+                        view.GroupName += lg.group.Name;
+                        view.GroupID = Convert.ToString(lg.group.ID);
+                    }
+                    else
+                    {
+                        view.GroupName += "," + lg.group.Name;
+                        view.GroupID = "," + Convert.ToString(lg.group.ID);
+                    }
+                }
+                lessonsView.Add(view);
+            }
+            // Only grid query values will be available here.
+            return PartialView("_IndexGrid", lessonsView);
+        }
+
         public IActionResult EditLecture(int ID)
         {
             USOSContext context = this.initContext();
+
             Lecture lecture = context.Lecture.Find(ID);
+
             return PartialView("EditLecture", lecture);
         }
         [HttpPost]
@@ -38,6 +77,7 @@ namespace USOS.Controllers
         public IActionResult EditLecture(Lecture model)
         {
             USOSContext context = this.initContext();
+
             context.Lecture.Update(model);
             context.SaveChanges();
             return RedirectToAction("Lectures", "Admin");
@@ -45,7 +85,9 @@ namespace USOS.Controllers
         public IActionResult EditGroup(int ID)
         {
             USOSContext context = this.initContext();
+
             Group group = context.Group.Find(ID);
+
             return PartialView("EditGroup", group);
         }
         [HttpPost]
@@ -53,6 +95,7 @@ namespace USOS.Controllers
         public IActionResult EditGroup(Group model)
         {
             USOSContext context = this.initContext();
+
             context.Group.Update(model);
             context.SaveChanges();
             return RedirectToAction("Groups", "Admin");
@@ -65,6 +108,7 @@ namespace USOS.Controllers
             EditStudentGroup model = new EditStudentGroup();
             model.userName = editUser.UserName;
             model.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+
             return PartialView("EditStudentGroup", model);
         }
         [HttpPost]
@@ -74,6 +118,7 @@ namespace USOS.Controllers
             AppUser student = _userManager.FindByNameAsync(model.userName).Result;
             var select  = context.StudentGroup.Where(x => x.appUser.UserName == model.userName).Select(x => new StudentGroup() {ID = x.ID,appUser = x.appUser,group = x.group });
             context.StudentGroup.RemoveRange(select);
+
             foreach (int groupId in model.group)
             {
                 Group group = context.Group.Find(groupId);
@@ -88,6 +133,7 @@ namespace USOS.Controllers
                 }
             }
             context.SaveChanges();
+
             return RedirectToAction("Users", "Admin");
         }
         public IActionResult EditUser(string userName)
@@ -114,6 +160,7 @@ namespace USOS.Controllers
         public async Task<IActionResult> EditUser(AdminUsersView model)
         {
             var roleManager = _provider.GetRequiredService<RoleManager<IdentityRole>>();
+
             AppUser editUser = _userManager.FindByNameAsync(model.UserName).Result;
             editUser.Email = model.Email;
             editUser.PhoneNumber = model.PhoneNumber;
@@ -142,40 +189,48 @@ namespace USOS.Controllers
                 }
             }
             var result = _userManager.UpdateAsync(editUser).Result;
+
             return RedirectToAction("Users", "Admin");
         }
         public async Task<IActionResult> DeleteUser(string userName)
         {
             AppUser editUser = _userManager.FindByNameAsync(userName).Result;
+
             await _userManager.DeleteAsync(editUser);
+
             return RedirectToAction("Users", "Admin");
         }
         public async Task<IActionResult> DeleteLecture(int ID)
         {
             USOSContext context = this.initContext();
+
             Lecture lecture = context.Lecture.Find(ID);
             if (lecture != null)
             {
                 context.Lecture.Remove(lecture);
                 context.SaveChanges();
             }
+
             return RedirectToAction("Lectures", "Admin");
         }
         public async Task<IActionResult> DeleteGroup(int ID)
         {
             USOSContext context = this.initContext();
+
             Group group = context.Group.Find(ID);
             if(group != null)
             {
                 context.Group.Remove(group);
                 context.SaveChanges();
             }
+
             return RedirectToAction("Groups", "Admin");
         }
         public IActionResult Groups()
         {
             USOSContext context = this.initContext();
             List<Group> groups;
+
             groups = context.Group.ToArray().OrderBy(x => x.ID).Select(x => new Group() { ID = x.ID, Name = x.Name }).ToList();
             return View(groups);
         }
@@ -183,20 +238,81 @@ namespace USOS.Controllers
         {
             USOSContext context = this.initContext();
             List<Lecture> lectures;
+
             lectures = context.Lecture.ToArray().OrderBy(x => x.ID).Select(x => new Lecture() { ID = x.ID, Name = x.Name }).ToList();
             return View(lectures);
         }
         public IActionResult CreateLecture()
         {
             USOSContext context = this.initContext();
+
             Lecture lecture = new Lecture();
+
             return PartialView("CreateLecture", lecture);
         }
-
-        public IActionResult CreateLesson()
+        public IActionResult EditLesson(int ID)
         {
             USOSContext context = this.initContext();
             CreateLessonView lesson = new CreateLessonView();
+            Lesson editLesson = context.Lesson.Where(x => x.ID == ID).Include(x => x.lecture).Include(x => x.lecturer).First();
+            
+            lesson.lectures = context.Lecture.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+            lesson.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
+
+            IList<AppUser> lecturers = _userManager.GetUsersInRoleAsync("Lecturer").Result;
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (AppUser user in lecturers)
+            {
+                SelectListItem item = new SelectListItem() { Value = user.UserName, Text = user.UserName };
+
+                list.Add(item);
+            }
+
+            foreach (SelectListItem g in lesson.groups)
+            {
+                var select = context.LessonsGroup.Where(x => x.lesson.ID == ID && x.group.ID == Convert.ToInt32(g.Value)).Include(x => x.lesson).Include(x => x.group).Select(x => new LessonsGroup(x));
+
+                if (select.Count() > 0)
+                    g.Selected = true;
+            }
+            lesson.lecturers = list;
+            lesson.lectureID = editLesson.lecture.ID;
+            lesson.lecturerID = editLesson.lecturer.UserName;
+            lesson.lessonID = ID;
+            return PartialView("EditLesson", lesson);
+        }
+        [HttpPost]
+        public IActionResult EditLesson(CreateLessonView model)
+        {
+            USOSContext context = this.initContext();
+            Lesson editLesson = context.Lesson.Find(model.lessonID);
+            if(model.lectureID != null)
+                editLesson.lecture = context.Lecture.Find(Convert.ToInt32(model.lectureID));
+            if(model.lecturerID != null)
+                editLesson.lecturer = _userManager.FindByNameAsync(model.lecturerID).Result;
+            var select = context.LessonsGroup.Where(x => x.lesson.ID == model.lessonID).Select(x => new LessonsGroup(x));
+            context.LessonsGroup.RemoveRange(select);
+            if (model.group != null)
+            {
+                foreach (int g in model.group)
+                {
+                    Group group = context.Group.Find(g);
+                    LessonsGroup newLessonGroup = new LessonsGroup();
+                    newLessonGroup.group = group;
+                    newLessonGroup.lesson = editLesson;
+                    context.LessonsGroup.Add(newLessonGroup);
+                }
+            }
+            context.Entry(editLesson.lecturer).State = EntityState.Unchanged;
+            context.SaveChanges();
+            return RedirectToAction("Lessons", "Admin");
+        }
+        public IActionResult CreateLesson()
+        {
+            USOSContext context = this.initContext();
+
+            CreateLessonView lesson = new CreateLessonView();
+
             lesson.lectures = context.Lecture.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
             lesson.groups = context.Group.Select(x => new SelectListItem() { Value = Convert.ToString(x.ID), Text = x.Name }).ToList();
             IList<AppUser> lecturers = _userManager.GetUsersInRoleAsync("Lecturer").Result;
@@ -212,6 +328,7 @@ namespace USOS.Controllers
         public IActionResult CreateLesson(CreateLessonView lecture)
         {
             USOSContext context = this.initContext();
+
             Lesson newLesson = new Lesson();
             newLesson.lecture = context.Lecture.Find(Convert.ToInt32(lecture.lectureID));
             newLesson.lecturer = _userManager.FindByNameAsync(lecture.lecturerID).Result;
@@ -232,40 +349,51 @@ namespace USOS.Controllers
         [HttpPost]
         public IActionResult CreateLecture(Lecture model)
         {
-            USOSContext context = this.initContext();           
+            USOSContext context = this.initContext();
+            
             Lecture newLecture = new Lecture();
+
             Lecture result = context.Lecture.Find(model.ID);
             if (result == null)
             {
                 newLecture.Name = model.Name;
+
                 context.Lecture.Add(newLecture);
                 context.SaveChanges();
             }
+
             return RedirectToAction("Lectures", "Admin");
         }
         public IActionResult CreateGroup()
         {
             USOSContext context = this.initContext();
+
             Group group = new Group();
+
             return PartialView("CreateGroup", group);
         }
         [HttpPost]
         public IActionResult CreateGroup(Group model)
         {
             USOSContext context = this.initContext();
+
             Group newGroup = new Group();
+
             Group result = context.Group.Find(model.ID);
             if(result == null)
             {
                 newGroup.Name = model.Name;
+
                 context.Group.Add(newGroup);
                 context.SaveChanges();
             }
+
             return RedirectToAction("Groups", "Admin");
         }
             public IActionResult CreateUser()
         {
             var userEdit = new AdminUsersView();
+
             userEdit.Roles = new List<SelectListItem>()
             {
                 new SelectListItem {Text = "Administrator", Value = "Admin"},
@@ -274,6 +402,7 @@ namespace USOS.Controllers
                 new SelectListItem {Text = "Student", Value = "Student"},
                 new SelectListItem {Text = "Pracownik", Value = "Worker"}
             };
+
             return PartialView("CreateUser", userEdit);
         }
         [HttpPost]
@@ -281,6 +410,7 @@ namespace USOS.Controllers
         {
         if (ModelState.IsValid)
         {
+
             AppUser newUser = _userManager.FindByNameAsync(model.UserName).Result;
             if (newUser == null)
             {
@@ -288,6 +418,7 @@ namespace USOS.Controllers
                 newUser.UserName = model.UserName;
                 newUser.PhoneNumber = model.PhoneNumber;
                 newUser.Email = model.Email;
+
                 var resultCreate = await _userManager.CreateAsync(newUser, model.Password);
                 if (resultCreate.Succeeded)
                 {
@@ -321,6 +452,7 @@ namespace USOS.Controllers
             }
             
         }
+
             model.Roles = new List<SelectListItem>()
             {
                 new SelectListItem {Text = "Administrator", Value = "Admin"},
@@ -329,6 +461,7 @@ namespace USOS.Controllers
                 new SelectListItem {Text = "Student", Value = "Student"},
                 new SelectListItem {Text = "Pracownik", Value = "Worker"}
             };
+
             return View("Index",model);
         }
        
@@ -341,12 +474,15 @@ namespace USOS.Controllers
             DbContextOptionsBuilder<USOSContext> options = new DbContextOptionsBuilder<USOSContext>();
             options.UseSqlServer(configuration.GetConnectionString("MyConnStr"));
             var context = new USOSContext(options.Options);
+
             return context;
         }
         public IActionResult Lessons()
         {
             USOSContext context = this.initContext();
+
             List<LessonsView> lessonsView = new List<LessonsView>();
+
             List<Lesson> lessons = context.Lesson.Select(x => new Lesson() { ID = x.ID, lecture = x.lecture, lecturer = x.lecturer }).ToList();
             foreach(Lesson lesson in lessons)
             {
@@ -355,7 +491,7 @@ namespace USOS.Controllers
                 view.LectureID = lesson.lecture.ID;
                 view.LectureName = lesson.lecture.Name;
                 view.LecturerName = lesson.lecturer.UserName;
-                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();
+                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();//.Select(x => new LessonsGroup(x)).ToList();
                 foreach (LessonsGroup lg in lessonsGroup)
                 {
                     if (view.GroupName == null)
@@ -377,15 +513,20 @@ namespace USOS.Controllers
         {
             if (!User.IsInRole("Admin"))
                 return RedirectToAction("Index", "Home");
+
             USOSContext context = this.initContext();
             var userRoles = new List<AdminUsersView>();
             var userStore = new UserStore<AppUser>(context);
+            
+
+            //Get all the usernames
             foreach (var user in userStore.Users)
             {
                 var r = new AdminUsersView
                 {
                     UserName = user.UserName,
                     Role = new List<string>()
+                    //Role = _userManager.GetRolesAsync(user).ToString()
                 };
                 if(_userManager.IsInRoleAsync(user,"Student").Result)
                 {
@@ -395,6 +536,7 @@ namespace USOS.Controllers
                         r.groups += s.group.Name + " ";
                     }
                 }
+
                 var roles = _userManager.GetRolesAsync(user).Result;
                 string roleStr = "";
                 foreach (var role in roles)
@@ -403,6 +545,7 @@ namespace USOS.Controllers
                 }
                 userRoles.Add(r);
             }
+
             return View(userRoles);
         }
     }
