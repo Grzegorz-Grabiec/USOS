@@ -44,7 +44,7 @@ namespace USOS.Controllers
                 view.LectureID = lesson.lecture.ID;
                 view.LectureName = lesson.lecture.Name;
                 view.LecturerName = lesson.lecturer.UserName;
-                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();//.Select(x => new LessonsGroup(x)).ToList();
+                List<LessonsGroup> lessonsGroup = context.LessonsGroup.Where(x => x.lesson.ID == lesson.ID).Include(x => x.group).Include(x => x.lesson).ToList();
                 foreach (LessonsGroup lg in lessonsGroup)
                 {
                     if (view.GroupName == null)
@@ -60,7 +60,6 @@ namespace USOS.Controllers
                 }
                 lessonsView.Add(view);
             }
-            // Only grid query values will be available here.
             return PartialView("_IndexGrid", lessonsView);
         }
 
@@ -518,15 +517,12 @@ namespace USOS.Controllers
             var userRoles = new List<AdminUsersView>();
             var userStore = new UserStore<AppUser>(context);
             
-
-            //Get all the usernames
             foreach (var user in userStore.Users)
             {
                 var r = new AdminUsersView
                 {
                     UserName = user.UserName,
                     Role = new List<string>()
-                    //Role = _userManager.GetRolesAsync(user).ToString()
                 };
                 if(_userManager.IsInRoleAsync(user,"Student").Result)
                 {

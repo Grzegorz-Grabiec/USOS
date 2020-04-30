@@ -62,7 +62,7 @@ namespace USOS.Controllers
             }
             return RedirectToAction("Plan");
         }
-
+        [HttpGet]
         public async Task<IActionResult> Download(string filename)
         {
             if (filename == null)
@@ -103,6 +103,7 @@ namespace USOS.Controllers
                 {".csv", "text/csv"}
             };
         }
+        [HttpGet]
         public async Task<IActionResult> DeleteFile(string filename)
         {          
             if (filename == null)

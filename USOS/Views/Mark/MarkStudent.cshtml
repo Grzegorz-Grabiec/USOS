@@ -5,8 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Marks</h2>
+<head>
 
+
+    <link href="~/css/style-home.css" rel="stylesheet" />
+
+</head>
+<br />
+<br />
 @(Html
 .Grid(Model)
 .Build(columns =>

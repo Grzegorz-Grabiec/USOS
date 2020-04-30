@@ -13,19 +13,23 @@
     <link href="~/css/style-home.css" rel="stylesheet" />
 
 </head>
-
+<br />
+<br />
 
 
 @(Html
 .Grid(Model)
 .Build(columns =>
 {
-columns.Add(model => model.Username).Titled("Student");
-columns.Add(model => model.Lesson).Titled("Przedmiot");
-columns.Add(model => model.Mark).Titled("Ocena");
-columns.Add().RenderedAs(model => Html.ActionLink("Edit", "EditMark", "Mark", new { lessonId = model.LessonID, username = model.Username }, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Mark", id = "EditMark" })).Titled("Edit");
+    columns.Add(model => model.Username).Titled("Student");
+    columns.Add(model => model.Lesson).Titled("Przedmiot");
+    columns.Add(model => model.Mark).Titled("Ocena");
+    columns.Add().RenderedAs(model => Html.ActionLink("Edytuj", "EditMark", "Mark",
+        new { lessonId = model.LessonID, username = model.Username },
+        new { @class = "btn btn-primary", data_toggle = "modal",
+            data_target = "#Mark", id = "EditMark" })).Titled("Edytuj");
 
-    })
+})
 .Filterable()
 .Sortable()
 .Pageable()
