@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-lg-12">
                 @Html.HiddenFor(model => model.lessonID)
-                <div class="form-group">
-                    <label asp-for="lectureID" class="control-label"></label>
+                <div class="form-group col-lg-10">
+                    <label asp-for="lectureID" class="control-label">Przedmiot</label>
                     <select asp-for="lectureID" class="form-control" asp-items="@Model.lectures">Przedmiot</select>
                 </div>
-                <div class="form-group">
-                    <label asp-for="lecturerID" class="control-label"></label>
+                <div class="form-group col-lg-10">
+                    <label asp-for="lecturerID" class="control-label">Wykładowca</label>
                     <select asp-for="lecturerID" class="form-control" asp-items="@Model.lecturers">Wykładowca</select>
                 </div>
                 <div class="form-group col-lg-10">
@@ -28,8 +28,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="Lesson">Cancel</button>
-        <button class="btn btn-success" id="Submit" type="submit">Submit</button>
+        <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="Lesson">Zamknij</button>
+        <button class="btn btn-success" id="Submit" type="submit">Zatwierdź</button>
     </div>
 </form>
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -3,23 +3,25 @@
 <form asp-action="EditStudentGroup">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Select Group</h4>
+        <h4 class="modal-title">Wybierz grupę</h4>
     </div>
     <div class="modal-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="userName" />
         <div class="row">
-            <div class="form-group col-lg-10">
-                <label>Grupy</label>
-                @Html.ListBoxFor(m => m.group, Model.groups, new { @class = "form-control" })
-                @Html.ValidationMessageFor(i => i.groups,
-                    "", new { @class = "text-warning" })
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-10">
+                        <label>Grupy</label>
+                        @Html.ListBoxFor(m => m.group, Model.groups, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(i => i.groups,
+                            "", new { @class = "text-warning" })
+                    </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="Group">Cancel</button>
-        <button class="btn btn-success" value="Create" id="Submit" type="submit">Submit</button>
-    </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" id="Cancel" class="btn btn-default" type="button" data-target="Group">Zamknij</button>
+                <button class="btn btn-success" value="Create" id="Submit" type="submit">Zatwierdź</button>
+            </div>
 </form>
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

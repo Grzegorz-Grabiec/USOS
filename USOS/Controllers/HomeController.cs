@@ -9,26 +9,41 @@ using USOS.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace USOS.Controllers
 {
 
     public class HomeController : Controller
     {
-        
+        private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration configuration;
         SqlConnection con;
         SqlCommand com;
         SqlDataReader dr;
 
-        public HomeController(IConfiguration config)
+        public HomeController(IConfiguration config, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             this.configuration = config;
         }
         
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Profile(string userName)
+        {
+                AppUser showUser = _userManager.FindByNameAsync(userName).Result;
+                var userShow = new AdminUsersView();
+            userShow.PhoneNumber = showUser.PhoneNumber;
+            userShow.Email = showUser.Email;
+            userShow.UserName = showUser.UserName;
+           // userShow.Name = showUser;
+
+                return View("Profile", userShow);
+             
         }
         public USOSContext initContext()
         {
@@ -156,14 +171,6 @@ namespace USOS.Controllers
             return RedirectToAction("News");
         }
 
-        [HttpGet]
-       
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
 
         public IActionResult Privacy()
         {

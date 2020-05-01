@@ -21,8 +21,10 @@
         <a id="createLesson" data-toggle="modal" asp-action="CreateLesson" data-target="#@modalID" class="btn btn-primary">
             <i class="glyphicon glyphicon-plus"></i>  Dodaj Zajęcia
         </a>
+
     </div>
 </div>
+<br />
 
 @(Html
 .Grid(Model)
@@ -31,7 +33,8 @@
     columns.Add(model => model.LectureName).Titled("Przedmiot");
     columns.Add(model => model.LecturerName).Titled("Wykładowca");
     columns.Add(model => model.GroupName).Titled("Grupy");
-    columns.Add().RenderedAs(model => Html.ActionLink("Edytuj", "EditLesson", "Admin", new { ID = model.ID}, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Lesson", id = "EditLesson" })).Titled("Edycja");
+    columns.Add().RenderedAs(model => Html.ActionLink("Edytuj", "EditLesson", "Admin", new { ID = model.ID }, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Lesson", id = "EditLesson" })).Titled("");
+    columns.Add().RenderedAs(model => Html.ActionLink("Usuń", "DeleteLesson", "Admin", new { ID = model.ID }, new { @class = "btn btn-primary", data_toggle = "modal", data_target = "#Lesson", id = "EditLesson" })).Titled("");
 
 })
 .Filterable()

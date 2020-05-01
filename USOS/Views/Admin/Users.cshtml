@@ -19,8 +19,9 @@
     <link href="~/css/style-home.css" rel="stylesheet" />
 
 </head>
-<div class="alert alert-success">
-    <strong> Udało się! </strong> Dodałes użytkownika.
+<div id="myAlert" class="alert alert-success collapse">
+    <a id="linkClose" href="#" class="close">&times;</a>
+    <strong> Udało się! </strong> Dodałeś użytkownika
 </div>
 <h2>Użytkownicy</h2>
 <div>
@@ -167,4 +168,21 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
 
+}
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+        window.onload = (function () {
+            $('#myAlert').show('fade');
+
+            setTimeout(function () {
+                $('#myAlert').hide('fade');
+            }, 3000);
+
+        });
+
+        $('#linkClose').click(function () {
+            $('#myAlert').hide('fade');
+        });
+    </script>
 }

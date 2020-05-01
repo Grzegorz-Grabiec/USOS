@@ -51,7 +51,9 @@ namespace USOS.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    TempData["status"] = "Success";
+                    ViewBag.Message = "Login";
+                    return RedirectToAction("Index", "Home",ViewBag.Message);
                 }
                 else
                 {

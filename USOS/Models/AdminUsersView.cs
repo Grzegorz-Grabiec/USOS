@@ -15,9 +15,9 @@ namespace USOS.Models
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+        [StringLength(100, ErrorMessage = "Hasło musi zawierać co najmniej {2} znaków.", MinimumLength = 8)]
         [Display(Name = "Password")]
-        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Hasło must zawierać co najmniej osiem znaków, w tym co najmniej jedną cyfrę, a także małe i wielkie litery oraz znaki specjalne")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Hasło musi zawierać co najmniej osiem znaków, w tym co najmniej jedną cyfrę, a także małe i wielkie litery oraz znaki specjalne")]
         public string Password { get; set; }
         [NotMapped]
         public List<string> Role { get; set; }
@@ -25,6 +25,8 @@ namespace USOS.Models
         public IEnumerable<SelectListItem> Roles { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
         public string groups { get; set; }
     }
 }

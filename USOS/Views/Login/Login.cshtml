@@ -1,25 +1,26 @@
-﻿@model LoginModel
-    <head>
-        <link href="~/css/site.css" rel="stylesheet" />
-        <link href="~/css/animate.min.css" rel="stylesheet" />
-        <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/css/style.css" rel="stylesheet" />
-        <link href="~/css/style-home.css" rel="stylesheet" />
-        <script src="~/js/formAnimation.js"></script>
-        <script src="~/js/jquery-2.2.3.min.js"></script>
-        <script src="~/js/jquery.validate.min.js"></script>
-        <script src="~/js/shake.js"></script>
-    </head>
+﻿
+@model LoginModel
+<head>
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/animate.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/style-home.css" rel="stylesheet" />
+    <script src="~/js/formAnimation.js"></script>
+    <script src="~/js/jquery-2.2.3.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/shake.js"></script>
+</head>
 <body>
-    <!-- main-agileits -->
     <div class="agileits">
 
-        
+
         <div class="w3-agileits-info">
             <form asp-controller="Login" class='form animate-form' id='form1' asp-action="Login" method="post" style="width:100%;">
                 <h1>Zaloguj się</h1>
                 <br />
-                
+
                 <div asp-validation-summary="All" style="color:red"></div>
                 <br />
                 <div class='form-group has-feedback w3ls'>
@@ -42,22 +43,43 @@
                     </div>
                     <br />
                     <div class='submit w3-agile'>
-                        <input class='btn btn-lg' type='submit' value='Zaloguj'>
+                        <input id="btnSubmit" class='btn btn-lg' type='submit' value='Zaloguj'>
                     </div>
-</form>
+            </form>
         </div>
     </div>
-    <!-- //agileits -->
     <style>
-        .ul{
-            color:red;
+        .ul {
+            color: red;
         }
     </style>
-  
-    <!-- js -->
+
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src='js/jquery.validate.min.js'></script>
     <script src='js/formAnimation.js'></script>
     <script src='js/shake.js'></script>
-    <!-- //js -->
+
 </body>
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+        background-color: #ffeeee !important;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold !important;
+        color: red !important;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>

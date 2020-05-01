@@ -71,13 +71,14 @@
                     }
                     else
                     {
+
                         <li><a asp-area="" asp-controller="Login" asp-action="Login">Zaloguj</a></li>
                     }
 
 
 
-
-                    <li><a>  @User.Identity.Name</a></li>
+                    
+                    <li><a asp-area="" asp-controller="Home" asp-action="Profile" asp-route-userName="@User.Identity.Name">@User.Identity.Name</a></li>
                 </ul>
             </div>
 

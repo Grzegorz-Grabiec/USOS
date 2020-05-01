@@ -8,9 +8,11 @@ namespace USOS.Models
 {
     public class LoginModel
     {
-        [Required, MaxLength(256)]
+        [Required(ErrorMessage = "Pole login musi być wypełnione"), MaxLength(256)]
         public string Login { get; set; }
-        [Required, MinLength(6), MaxLength(25), DataType(DataType.Password)]
+        [Required(ErrorMessage = "Pole hasło musi być wypełnione")]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "Hasło musi zawierać co najmniej {2} znaków.", MinimumLength = 7)]
         public string Password { get; set; }
 
         [Display(Name ="Remember Me")]

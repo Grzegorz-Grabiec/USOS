@@ -193,9 +193,11 @@ namespace USOS.Controllers
         }
         public async Task<IActionResult> DeleteUser(string userName)
         {
+
             AppUser editUser = _userManager.FindByNameAsync(userName).Result;
 
             await _userManager.DeleteAsync(editUser);
+            await _userManager.UpdateAsync(editUser);
 
             return RedirectToAction("Users", "Admin");
         }
@@ -203,9 +205,11 @@ namespace USOS.Controllers
         {
             USOSContext context = this.initContext();
 
+
             Lecture lecture = context.Lecture.Find(ID);
             if (lecture != null)
             {
+                context.Lecture.RemoveRange(lecture);
                 context.Lecture.Remove(lecture);
                 context.SaveChanges();
             }
@@ -438,7 +442,8 @@ namespace USOS.Controllers
                             }
                         }
                     }
-                    return RedirectToAction("Users", "Admin");
+                        TempData["status"] = "Success";
+                        return RedirectToAction("Users", "Admin");
                 }
                 else    
                 {
@@ -521,6 +526,8 @@ namespace USOS.Controllers
             {
                 var r = new AdminUsersView
                 {
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
                     UserName = user.UserName,
                     Role = new List<string>()
                 };

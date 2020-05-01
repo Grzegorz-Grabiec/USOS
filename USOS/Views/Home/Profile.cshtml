@@ -1,0 +1,44 @@
+﻿@model AdminUsersView
+    <head>
+
+
+        <link href="~/css/style-home.css" rel="stylesheet" />
+
+    </head>
+    <div class="modal-header">
+        <h4 class="modal-title">Profil</h4>
+    </div>
+    <div class="modal-body form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="form-group col-lg-8" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+                    <label asp-for="UserName" class="control-label">Nazwa użytkownika</label>
+                    <input asp-for="UserName" class="form-control" readonly />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-8" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+                    <label asp-for="PhoneNumber" class="control-label">Numer Telefonu</label>
+                    <input asp-for="PhoneNumber" class="form-control" readonly/>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-8" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+                    <label asp-for="Email" class="control-label">Email</label>
+                    <input asp-for="Email" class="form-control" readonly />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-8" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+                    <label asp-for="Name" class="control-label">Imię</label>
+                    <input asp-for="Name" class="form-control" readonly />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-8" style="background-color:#f7f7f7;padding: 10px;margin: 10px;border-left: 10px ridge rgb(27, 245, 233, .6);border-radius: 6px;box-shadow:0 2px 1px rgba(0, 0, 0, 0.2),inset 0 2px 1px rgba(0, 0, 0, 0.2);">
+                    <label asp-for="Surname" class="control-label">Nazwisko</label>
+                    <input asp-for="Surname" class="form-control" readonly />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+

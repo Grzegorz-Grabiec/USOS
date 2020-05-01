@@ -1,13 +1,10 @@
 
-
-
-h1 {
+    h1 {
     font-size: 3em;
     text-align: center;
     color: black;
     font-weight: 100;
 }
-/*-- main --*/
 .agileits {
     padding: 5em 0 0;
 }
