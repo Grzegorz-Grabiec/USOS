@@ -171,8 +171,6 @@ form.animate-form .form-group.has-success .form-control-feedback {
 	-o-transform: scale(1);
 	transform: scale(1); 
 }
-/*-- //agileits --*/
-/*-- copyright --*/
 .w3-agile-copyright { 
     text-align: center;
 	margin:7em 0 0;
@@ -194,8 +192,6 @@ form.animate-form .form-group.has-success .form-control-feedback {
 .w3-agile-copyright p a:hover{
     color: #fff;	
 }
-/*-- //copyright --*/
-/*-- responsive-design --*/
 @media(max-width:1440px){
 .w3-agileits-info {
     width: 29%; 
@@ -330,4 +326,3 @@ p.w3agileits {
 }
 
 }
-/*-- //responsive-design --*/
